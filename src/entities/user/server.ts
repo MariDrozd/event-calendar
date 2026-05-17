@@ -1,1 +1,1 @@
-export { denyIfNotParent } from './server/denyRole';
+export { denyIfNotParent, denyIfNotChild } from './server/denyRole';

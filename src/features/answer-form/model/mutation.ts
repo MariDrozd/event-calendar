@@ -1,4 +1,8 @@
-import { EventDetailsDTO, fetchCheckAnswer } from '@/src/entities/event';
+import {
+  EventDetailsDTO,
+  eventQueryKeys,
+  fetchCheckAnswer,
+} from '@/src/entities/event';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCheckAnswer = (start: string) => {
@@ -8,8 +12,8 @@ export const useCheckAnswer = (start: string) => {
     mutationFn: (answer: string) => fetchCheckAnswer(start, answer),
     onMutate: async (_answer) => {
       await Promise.all([
-        qc.cancelQueries({ queryKey: ['events'] }),
-        qc.cancelQueries({ queryKey: ['event', start] }),
+        qc.cancelQueries({ queryKey: eventQueryKeys.publicList }),
+        qc.cancelQueries({ queryKey: eventQueryKeys.publicDetails(start) }),
       ]);
 
       const prevDetails = qc.getQueriesData<EventDetailsDTO>({
@@ -54,10 +58,16 @@ export const useCheckAnswer = (start: string) => {
     onSettled: async () => {
       await Promise.all([
         qc.invalidateQueries({
-          queryKey: ['events'],
+          queryKey: eventQueryKeys.publicList,
         }),
         qc.invalidateQueries({
-          queryKey: ['event', start],
+          queryKey: eventQueryKeys.adminList,
+        }),
+        qc.invalidateQueries({
+          queryKey: eventQueryKeys.publicDetails(start),
+        }),
+        qc.invalidateQueries({
+          queryKey: eventQueryKeys.adminDetails(start),
         }),
       ]);
     },

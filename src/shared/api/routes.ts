@@ -6,4 +6,7 @@ export const apiRoutes = {
   me: () => '/api/auth/me',
   login: () => '/api/auth/login',
   logout: () => '/api/auth/logout',
+  adminEvents: () => '/api/admin/events',
+  adminEventByDate: (start: string) =>
+    `/api/admin/events/${encodeURIComponent(start)}`,
 };

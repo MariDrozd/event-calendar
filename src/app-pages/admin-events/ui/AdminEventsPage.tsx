@@ -1,16 +1,17 @@
 'use client';
 
+import { type EventTask } from '@/src/entities/event';
 import {
-  EventList,
-  type EventListItem,
-  fetchEvents,
-} from '@/src/entities/event';
-import { fetchDeleteEvent } from '@/src/entities/event/api/client';
+  fetchAdminEvents,
+  fetchDeleteEvent,
+} from '@/src/entities/event/api/client';
 import { TrashDropZone, trashDropZoneId } from '@/src/features/delete-event';
 import { DndContext } from '@dnd-kit/core';
 import { DragEndEvent } from '@dnd-kit/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { AdminEventsList } from './AdminEventsList';
+import { CreateEvent } from '@/src/features/create-event';
 
 type StatusFilter = 'all' | 'active' | 'done';
 
@@ -20,9 +21,9 @@ export const AdminEventsPage = () => {
     isPending,
     isError,
     error,
-  } = useQuery<EventListItem[], Error>({
-    queryKey: ['events'],
-    queryFn: fetchEvents,
+  } = useQuery<EventTask[], Error>({
+    queryKey: ['admin-events'],
+    queryFn: fetchAdminEvents,
   });
 
   const [search, setSearch] = useState<string>('');
@@ -51,7 +52,7 @@ export const AdminEventsPage = () => {
     mutationFn: fetchDeleteEvent,
     onSuccess: () => {
       qc.invalidateQueries({
-        queryKey: ['events'],
+        queryKey: ['admin-events'],
       });
     },
   });
@@ -104,9 +105,9 @@ export const AdminEventsPage = () => {
           </select>
         </label>
       </div>
-
+      <CreateEvent />
       <DndContext onDragEnd={handleDragEnd}>
-        <div>
+        <div className="flex flex-col gap-10">
           {isPending && <p>Loading events</p>}
           {isError && (
             <p className="text-red-600">
@@ -117,7 +118,7 @@ export const AdminEventsPage = () => {
             <p>Events not found</p>
           )}
           {!isPending && !isError && filteredEvents.length > 0 && (
-            <EventList events={filteredEvents} />
+            <AdminEventsList events={filteredEvents} />
           )}
           <TrashDropZone />
         </div>

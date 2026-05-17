@@ -6,6 +6,10 @@ export const POST = async (
   req: Request,
   { params }: { params: Promise<{ start: string }> },
 ) => {
+  // вернуть после тестов
+  // const denied = await denyIfNotChild();
+  // if (denied) return denied;
+
   const { start } = await params;
 
   let body;

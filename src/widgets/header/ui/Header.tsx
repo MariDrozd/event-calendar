@@ -7,15 +7,15 @@ export const Header = () => {
 	const { data, isError, isLoading } = useMeQuery();
 
   return (
-		<header className="flex w-full h-[50px] fixed border-2 border-b-blue-500 gap-4">
-			{isLoading && <span>Загрузка…</span>}
-			{isError && <span>Вход не выполнен</span>}
+		<header className="flex w-full h-14 fixed border-2 border-b-blue-500 gap-4 mb-10">
+			{isLoading && <span>Loading...</span>}
+			{isError && <span>Login failed</span>}
 			{data ? (
 				<>
 				<span>{data.name} - {data.role}</span>
-					{data?.role === 'parent' && <Link href="/admin">Админ</Link>}
+					{data?.role === 'parent' && <Link href="/admin">Admin</Link>}
 					</>
-			) : <Link href="/login">Войти</Link>}
+			) : <Link href="/login">Login</Link>}
     </header>
   );
 };

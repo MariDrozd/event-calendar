@@ -1,25 +1,41 @@
 'use client';
 
+import { eventQueryKeys } from '@/src/entities/event';
 import { fetchCheckAnswer } from '@/src/entities/event/api/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 export const AnswerForm = ({ start }: { start: string }) => {
   const [answer, setAnswer] = useState('');
 
+  const qc = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: (payload: { start: string; answer: string }) =>
       fetchCheckAnswer(payload.start, payload.answer),
+
+    onSuccess: (data) => {
+      if (data.isCorrectAnswer) {
+        qc.invalidateQueries({ queryKey: eventQueryKeys.publicList });
+        qc.invalidateQueries({ queryKey: eventQueryKeys.publicDetails(start) });
+        setAnswer('');
+      }
+    },
   });
 
   const onCheck = () => {
+
+    if (!answer.trim() || mutation.isPending) return;
+
     mutation.mutate({ start, answer });
   };
   console.log('mutation.data.isCorrect', mutation);
 
+  const isCorrect = mutation.data?.isCorrectAnswer === true;
+
   return (
     <section className="mt-6">
-      <h3>Проверка ответа</h3>
+      <h3>Check answer:</h3>
 
       <div className="flex gap-2 mt-2 items-center">
         <input
@@ -39,7 +55,7 @@ export const AnswerForm = ({ start }: { start: string }) => {
 
       {mutation.isError && (
         <p className="mt-2">
-          Ошибка:{' '}
+          Error:{' '}
           {mutation.error.message ?? 'Произошла ошибка при проверке ответа'}
         </p>
       )}
@@ -47,7 +63,7 @@ export const AnswerForm = ({ start }: { start: string }) => {
       {mutation.isSuccess && (
         <p className="mt-2">
           {mutation.data.isCorrectAnswer
-            ? 'Верно.'
+            ? 'Верно. Подарок доступен'
             : 'Неверно. Попробуй ещё раз.'}
         </p>
       )}

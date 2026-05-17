@@ -1,5 +1,25 @@
 [
   {
+    "title": "12",
+    "description": "12",
+    "answer": "12",
+    "start": "2926-09-12",
+    "gift": "12",
+    "id": "534a8d46-e6c1-44fc-b985-aafee288287e",
+    "end": null,
+    "isDone": false
+  },
+  {
+    "title": "sdsd",
+    "description": "sdsd",
+    "answer": "sdsd",
+    "start": "2026-10-12",
+    "gift": "sd",
+    "id": "a928e140-6b5d-4223-84f9-ba4e600451d5",
+    "end": null,
+    "isDone": false
+  },
+  {
     "id": "1",
     "title": "День 1. Русский алфавит",
     "description": "Напечатай заглавными буквами весь русский алфавит подряд без пробелов.",
@@ -41,8 +61,9 @@
     "description": "Напиши по-английски числа от 1 до 5 маленькими буквами через пробел: one two three four five.",
     "answer": "one two three four five",
     "start": "2025-12-05",
-    "end": null,
-    "gift": "Красивый стикер в тетрадь"
+    "end": "2026-05-17",
+    "gift": "Красивый стикер в тетрадь",
+    "isDone": true
   },
   {
     "id": "6",

@@ -1,8 +1,8 @@
-import { DayEventClient } from '@/src/widgets/day-event';
-import { AnswerForm } from '@/src/features/answer-form';
 import { getQueryClient } from '@/src/shared/lib/react-query';
 import { loadEventDetails } from '@/src/entities/event/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { eventQueryKeys } from '@/src/entities/event';
+import { CalendarEvent } from '@/src/app-pages/calendar-event';
 
 type Props = {
   params: Promise<{ start: string }>;
@@ -14,15 +14,14 @@ const DayEvent = async ({ params }: Props) => {
   const qc = getQueryClient();
 
   await qc.prefetchQuery({
-    queryKey: ['event', start],
+    queryKey: eventQueryKeys.publicDetails(start),
     queryFn: () => loadEventDetails(start),
   });
 
   return (
     <>
       <HydrationBoundary state={dehydrate(qc)}>
-        <DayEventClient start={start} />
-        <AnswerForm start={start} />
+        <CalendarEvent start={start} />
       </HydrationBoundary>
     </>
   );

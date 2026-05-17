@@ -1,6 +1,6 @@
+import { CalendarEventsList } from '@/src/app-pages/calendar-events-list';
 import { loadEventList } from '@/src/entities/event/server';
 import { getQueryClient } from '@/src/shared/lib/react-query';
-import { CalendarList } from '@/src/widgets/calendar-list';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 const CalendarPage = async () => {
@@ -14,7 +14,7 @@ const CalendarPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
-      <CalendarList />
+      <CalendarEventsList />
     </HydrationBoundary>
   );
 };

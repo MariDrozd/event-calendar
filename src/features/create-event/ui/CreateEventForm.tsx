@@ -1,13 +1,26 @@
 'use client';
 
-import {
-  type EventCreateRequest,
-  fetchCreateEvent,
-} from '@/src/entities/event';
+import { z } from 'zod';
+import { eventQueryKeys, fetchCreateEvent } from '@/src/entities/event';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormField } from '@/src/shared/ui/form-field';
+import { Input } from '@/src/shared/ui/input';
+import { Textarea } from '@/src/shared/ui/textarea';
 
-const initialState: EventCreateRequest = {
+const createEventSchema = z.object({
+  start: z.string().trim().min(1, 'Start date is required'),
+  title: z.string().trim().min(1, 'Title is required'),
+  description: z.string().trim().min(1, 'Description is required'),
+  answer: z.string().trim().min(1, 'Answer is required'),
+  gift: z.string().trim().min(1, 'Gift is required'),
+});
+
+type CreateEventFormValues = z.infer<typeof createEventSchema>;
+
+const defaultValues: CreateEventFormValues = {
   start: '',
   title: '',
   description: '',
@@ -15,114 +28,120 @@ const initialState: EventCreateRequest = {
   gift: '',
 };
 
+
+
 export const CreateEventForm = () => {
-	const [form, setForm] = useState(initialState);
-	const [successMessage, setSuccessMessage] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<CreateEventFormValues>({
+    resolver: zodResolver(createEventSchema),
+    defaultValues,
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
 
-  const onChangeField = (key: keyof EventCreateRequest, value: string) => {
-    if (createEvent.isError) {
-      createEvent.reset();
-		};
-		if (successMessage) {
-      setSuccessMessage('');
-		};
+  const [successMessage, setSuccessMessage] = useState('');
+  const timeoutRef = useRef<number | null>(null);
 
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  useEffect(() => {
+
+  return () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
   };
+}, []);
 
   const qc = useQueryClient();
 
   const createEvent = useMutation({
-    mutationFn: (dataEvent: EventCreateRequest) => fetchCreateEvent(dataEvent),
-    onSuccess: () => {
-      qc.invalidateQueries({
-        queryKey: ['events'],
+    mutationFn: fetchCreateEvent,
+    onSuccess: async () => {
+      await qc.invalidateQueries({
+        queryKey: eventQueryKeys.adminList,
       });
-      setForm(initialState);
-      setSuccessMessage('Событие успешно добавлено');
-    },
+      await qc.invalidateQueries({
+        queryKey: eventQueryKeys.publicList,
+      });
+      reset(defaultValues);
+      setSuccessMessage('Event successfully created');
 
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        setSuccessMessage('');
+      }, 5000);
+    },
   });
 
-  const handleCreateEvent = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (data: CreateEventFormValues) => {
+    if (isSubmitting) return;
 
-    if (createEvent.isPending) return;
-
-    createEvent.mutate(form);
+    createEvent.mutate(data);
   };
 
+  const onClear = () => {
+    reset(defaultValues);
+    createEvent.reset();
+    setSuccessMessage('');
+
+    if (timeoutRef.current) {
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = null;
+  }
+  };
+
+
   return (
-    <form onSubmit={handleCreateEvent} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-3">
-        <label htmlFor="start">Дата начала:</label>
-        <input
-          type="text"
-          id="start"
-          value={form.start}
-          onChange={(e) => onChangeField('start', e.target.value)}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-3">
-        <label htmlFor="title">Название:</label>
-        <input
-          type="text"
-          id="title"
-          value={form.title}
-          onChange={(e) => onChangeField('title', e.target.value)}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-3">
-        <label htmlFor="description">Описание:</label>
-        <input
-          type="text"
-          id="description"
-          value={form.description}
-          onChange={(e) => onChangeField('description', e.target.value)}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-3">
-        <label htmlFor="answer">Ответ:</label>
-        <input
-          type="text"
-          id="answer"
-          value={form.answer}
-          onChange={(e) => onChangeField('answer', e.target.value)}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-3">
-        <label htmlFor="gift">Подарок:</label>
-        <input
-          type="text"
-          id="gift"
-          value={form.gift}
-          onChange={(e) => onChangeField('gift', e.target.value)}
-          required
-        />
-      </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-5"
+    >
+      <FormField error={errors.start?.message} label="Start date">
+        <Input
+          {...register('start')}
+          type="date"
+          placeholder="Start date DD.MM.YYY"
+        ></Input>
+      </FormField>
+      <FormField error={errors.title?.message} label="Title">
+        <Input {...register('title')} placeholder="Title"></Input>
+      </FormField>
+
+      <FormField error={errors.description?.message} label="Description">
+        <Textarea
+          {...register('description')}
+          placeholder="Description"
+        ></Textarea>
+      </FormField>
+
+      <FormField error={errors.answer?.message} label="Answer">
+        <Input {...register('answer')} placeholder="Answer"></Input>
+      </FormField>
+      <FormField error={errors.gift?.message} label="Gift">
+        <Input {...register('gift')} placeholder="Gift"></Input>
+      </FormField>
+      <div className="flex gap-2"></div>
       <button
+        className="w-20 h-5"
         type="submit"
-        disabled={createEvent.isPending}
-        className='border border-blue-500 w-50'
+        disabled={isSubmitting || createEvent.isPending}
       >
-        {createEvent.isPending ? 'Создание...' : 'Создать'}
+        {createEvent.isPending ? 'Creating...' : 'Create'}
       </button>
-			{createEvent.isError && (
-        <p className="text-sm text-red-600">
-          {createEvent.error.message}
-        </p>
+      <button className="w-20 h-5" type="button" onClick={onClear}>
+        Clear all
+      </button>
+      {createEvent.isError && (
+        <p className="text-sm text-red-600">{createEvent.error.message}</p>
       )}
-			{successMessage && (
-        <p className="text-sm text-green-600">
-          {successMessage}
-        </p>
+      {successMessage && (
+        <p className="text-sm text-green-600">{successMessage}</p>
       )}
     </form>
   );

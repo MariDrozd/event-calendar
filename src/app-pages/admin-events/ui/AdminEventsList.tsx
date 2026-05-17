@@ -1,11 +1,11 @@
-import type { EventListItem } from '../model/types';
+import { EventTask } from '@/src/entities/event';
 import { DraggableEventCard } from './DraggableEventCard';
 
-type EventListProps = {
-  events: EventListItem[];
+type EventListsProps = {
+  events: EventTask[];
 };
 
-export const EventList = ({ events }: EventListProps) => {
+export const AdminEventsList = ({ events }: EventListsProps) => {
   return (
     <div className="flex flex-col gap-2">
       {events.map((event) => (

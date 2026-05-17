@@ -4,5 +4,6 @@ export {
   getAllEvents,
   createEvent,
   deleteEvent,
-  patchEventEnd
+  patchEventEnd,
+  patchEvent
 } from './server/eventsFileDb';

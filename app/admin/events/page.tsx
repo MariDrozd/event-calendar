@@ -3,7 +3,7 @@ import { AdminEventsPage } from '@/src/app-pages/admin-events';
 const Page = () => {
   return (
     <>
-      <div>Admin</div>
+      <div>Manage events</div>
       <AdminEventsPage />
     </>
   );

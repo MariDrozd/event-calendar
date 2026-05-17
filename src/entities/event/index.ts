@@ -5,7 +5,8 @@ export type {
   EventDetails,
   EventListItem,
   CheckAnswerResponse,
-  EventCreateRequest
+  EventCreateRequest,
 } from './model/types';
 export { toEventDetails } from './model/dto';
-export { EventList } from './ui/EventList';
+export { EventCardBase } from './ui/EventCardBase';
+export { eventQueryKeys } from './model/queryKeys';

@@ -1,5 +1,6 @@
 import { toEventDetails } from '@/src/entities/event';
 import { deleteEvent } from '@/src/entities/event/server';
+import { patchEvent } from '@/src/entities/event/server/eventsFileDb';
 import { loadEventDetails } from '@/src/entities/event/server/loader';
 import { denyIfNotParent } from '@/src/entities/user/server';
 import { NextResponse } from 'next/server';
@@ -24,19 +25,4 @@ export const GET = async (
   return NextResponse.json(eventDto, { status: 200 });
 };
 
-export const DELETE = async (
-  _req: Request,
-  { params }: { params: Promise<{ start: string }> },
-) => {
-  const denied = await denyIfNotParent();
-  if (denied) return denied;
 
-  const { start } = await params;
-
-  const deleted = await deleteEvent(start);
-
-  if (!deleted) {
-    return NextResponse.json({ error: 'Event not found' }, { status: 404 });
-  }
-  return NextResponse.json(toEventDetails(deleted), { status: 200 });
-};
