@@ -1,35 +1,37 @@
 'use client';
 
-import { EventTask } from "@/src/entities/event";
-import { useState } from "react";
-import { EditEventForm } from "./EditEventForm";
+import { EventTask } from '@/src/entities/event';
+import { useState } from 'react';
+import { EditEventForm } from './EditEventForm';
+import { Button } from '@/src/shared/ui/button';
 
 type EditEventProps = {
-	event: EventTask;
-}
+  event: EventTask;
+  onEditingChange: (isEditing: boolean) => void;
+};
 
-export const EditEvent = ({event}: EditEventProps) => {
-	const [isEditing, setIsEditing] = useState<boolean>(false);
-	console.log('isEditing', isEditing)
-	
-	if (isEditing) {
-		return (
-			<EditEventForm
-				event={event}
-				onSaved={() => setIsEditing(false)}
-				onCancel={() => setIsEditing(false)}
-			/>
-		)
-	}
+export const EditEvent = ({ event, onEditingChange }: EditEventProps) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
-	return (
-		<button
-			type='button'
-			onClick={() => setIsEditing(true)}
-			className="border-2 border-green-600 w-20 h-10"
-		>
-			Edit
-		</button>
-	)
+  const openEdit = () => {
+    setIsEditing(true);
+    onEditingChange?.(true);
+  };
 
-}
+  const closeEdit = () => {
+    setIsEditing(false);
+    onEditingChange?.(false);
+  };
+
+  if (isEditing) {
+    return (
+      <EditEventForm event={event} onSaved={closeEdit} onCancel={closeEdit} />
+    );
+  }
+
+  return (
+    <Button type="button" onClick={openEdit} className="min-w-25">
+      Edit
+    </Button>
+  );
+};

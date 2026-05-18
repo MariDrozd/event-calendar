@@ -14,8 +14,12 @@ export const EventCardBase = (props: EventCardBaseProps) => {
 
   return (
     <article className={clsx(cl, 'flex flex-col')}>
-      <div className="text-sm opacity-80">{start}</div>
-      <h2 className="font-semibold my-1.5">{title}</h2>
+      <div className="text-sm opacity-80 mb-2">
+        <span>Start date: </span>
+        {start}
+      </div>
+
+      <h2 className="font-bold mb-1">{title}</h2>
 
       {isDone && (
         <div>
@@ -23,7 +27,7 @@ export const EventCardBase = (props: EventCardBaseProps) => {
         </div>
       )}
 
-      {children && <div className="mt-3">{children}</div>}
+      {children && <div>{children}</div>}
     </article>
   );
 };

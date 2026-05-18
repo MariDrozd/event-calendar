@@ -1,6 +1,7 @@
 'use client';
 import { Trash2 } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
+import clsx from 'clsx';
 
 const TRASH_DROP_ZONE_ID = 'trash-drop-zone';
 
@@ -14,10 +15,16 @@ export const TrashDropZone = () => {
   return (
     <div
       ref={setNodeRef}
-      className={`w-22 h-22 border-2 rounded-full flex flex-col items-center justify-cente ${isOver ? 'border-red-600 bg-red-100' : 'border-green-600'} text-sm overflow-hidden flex items-center justify-center p-0.5`}
-    >
+      className={clsx(
+        'flex h-24 w-24 flex-col items-center justify-center gap-1',
+        'rounded-full border-2 shadow-lg backdrop-blur',
+        'text-xs font-medium transition-all duration-200',
+        isOver
+          ? 'scale-105 border-rose-400 bg-rose-50 text-rose-600'
+          : 'border-slate-300 bg-white/90 text-slate-500 hover:border-rose-300 hover:text-rose-400'
+      )}>
       <Trash2 size={40} />
-      <span className="text-[10px]">Drop to delete</span>
+      <span className="text-xs">Drop event</span>
     </div>
   );
 };

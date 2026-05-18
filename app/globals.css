@@ -1,43 +1,12 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --btn-border: rgb(65, 253, 112);
-  --btn-danger-border: rgb(251, 202, 54);
-
-}
-
 @layer base {
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-slate-50 text-slate-900;
     font-family: system-ui, sans-serif;
   }
 
-  button {
-    @apply inline-flex items-center justify-center gap-2
-           p-1
-           whitespace-nowrap
-           rounded-md
-           text-sm font-medium
-           transition-colors
-           outline-none
-           disabled:pointer-events-none disabled:opacity-50
-           focus-visible:ring-2 focus-visible:ring-blue-500/50;
-  }
-
-  input {
-    @apply block w-full
-           rounded-md
-           border border-gray-300
-           bg-white
-           text-sm text-gray-900
-           placeholder:text-gray-400
-           transition-colors
-           outline-none
-           disabled:cursor-not-allowed disabled:opacity-50
-           focus:border-blue-500
-           focus:ring-2 focus:ring-blue-500/20
-           h-10 px-3;
+  * {
+    box-sizing: border-box;
   }
 }

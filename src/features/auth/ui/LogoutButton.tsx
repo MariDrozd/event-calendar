@@ -1,6 +1,7 @@
 "use client"
 
 import { fetchLogout } from '@/src/entities/user/api/client';
+import { Button } from '@/src/shared/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -12,6 +13,7 @@ export const LogoutButton = () => {
     mutationFn: fetchLogout,
     onSuccess: () => {
       qc.setQueryData(['me'], null);
+      qc.removeQueries({ queryKey: ['me'] });
       router.replace('/login');
     },
   });
@@ -21,8 +23,14 @@ export const LogoutButton = () => {
   };
 
   return (
-    <button disabled={logout.isPending} onClick={onLogoutHandler}>
-      {logout.isPending ? "Выход..." : "Выйти"}
-    </button>
+
+    <Button
+      type="button"
+      size="sm"
+      variant="secondary"
+      disabled={logout.isPending}
+      onClick={onLogoutHandler}>
+      {logout.isPending ? "Logout..." : "Logout"}
+    </Button>
   );
 };

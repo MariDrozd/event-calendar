@@ -1,68 +1,86 @@
-'use client'
+'use client';
 
-import type { Candidate } from "@/src/entities/user"
-import { fetchLogin } from "@/src/entities/user"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { z } from 'zod';
+import { fetchLogin } from '@/src/entities/user';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { FormField } from '@/src/shared/ui/form-field';
+import { Input } from '@/src/shared/ui/input';
+import { Button } from '@/src/shared/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const loginSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required'),
+  pin: z.string().trim().min(4, "Password must be at least 4 characters"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
+const defaultValues: LoginFormValues = {
+  name: '',
+  pin: '',
+};
 
 export const LoginForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues,
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
 
-	const [name, setName] = useState('');
-	const [pass, setPass] = useState('');
+  const qc = useQueryClient();
+  const router = useRouter();
 
-	const qc = useQueryClient();
-	const router = useRouter();
+  const login = useMutation({
+    mutationFn: fetchLogin,
+    onSuccess: (user) => {
+      qc.setQueryData(['me'], user);
+      router.replace('/calendar');
+    },
+  });
 
-	const login = useMutation({
-		mutationFn: fetchLogin,
-		onSuccess: (user) => {
-			qc.setQueryData(['me'], user);
-			router.replace('/calendar')
-		}
-	})
+  const onSubmit = (data: LoginFormValues) => {
+    if (isSubmitting) return;
+    login.mutate(data);
+  };
 
-
-	const onLoginHandler = (e: React.SyntheticEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		if (login.isPending) return;
-		const candidate: Candidate = {
-			name: name.trim(),
-			pin: pass
-		};
-		login.mutate(candidate)
-	}
-
-	return (
-		<form
-			className="flex flex-col gap-4"
-			 onSubmit={onLoginHandler}
+  return (
+    <form
+			className="
+			mx-auto flex w-full 
+			max-w-md  p-6 mt-10
+			flex-col gap-4 
+			rounded-2xl border border-slate-200 
+			bg-white
+			shadow-sm"
+      onSubmit={handleSubmit(onSubmit)}
 		>
-			<label htmlFor="name">Имя</label>
-			<input
-				type="text"
-				id="name"
-				placeholder="Имя"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-			/>
-			<label htmlFor="pass">Пароль</label>
-			<input
-				type="password"
-				id="pass"
-				placeholder="Пароль"
-				value={pass}
-				onChange={(e) => setPass(e.target.value)}
-			/>
-			{login.isError && (
-        <p className="text-sm text-red-600">
-          Неверные данные
+			<div>
+        <h1 className="text-2xl font-semibold text-slate-900">Login</h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Enter your name and PIN to continue.
         </p>
-      )}
-			<button
-				type='submit'
-			disabled={login.isPending}
-			>{login.isPending ? "Выполняется..." : "Войти"}</button>
-		</form>
-	)
-}
+      </div>
+      <FormField error={errors.name?.message} label="Name">
+        <Input {...register('name')} type="text" placeholder="Name"></Input>
+      </FormField>
+      <FormField error={errors.pin?.message} label="Password">
+        <Input
+          {...register('pin')}
+          type="password"
+          placeholder="Password"
+        ></Input>
+      </FormField>
+      <Button type="submit" disabled={login.isPending || isSubmitting}>
+        {login.isPending ? 'Login...' : 'Login'}
+      </Button>
+      {login.isError && <p className="text-sm text-rose-500">Invalid login credentials</p>}
+    </form>
+  );
+};

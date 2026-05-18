@@ -6,6 +6,7 @@ import { fetchEventByDate } from '@/src/entities/event/api/client';
 import { EventDetails } from '@/src/entities/event/model/types';
 import { AnswerForm } from '@/src/features/answer-form';
 import { useQuery } from '@tanstack/react-query';
+import { useMeQuery } from '@/src/entities/user';
 
 interface CalendarEventProps {
   start: string;
@@ -20,6 +21,11 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
     queryKey: eventQueryKeys.publicDetails(start),
     queryFn: () => fetchEventByDate(start),
   });
+
+  const { data: user, isLoading: isUserLoading } = useMeQuery();
+
+  const isChild = user?.role === 'child';
+  const isParent = user?.role === 'parent';
 
   if (isError) {
     return (
@@ -42,7 +48,14 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
         title={event.title}
         start={event.start}
         isDone={event.isDone}
-        cl="gap-4"
+        cl="
+        gap-4
+        rounded-2xl
+        border border-slate-200
+        bg-white
+        p-6
+        shadow-sm
+        "
       >
         <div className="flex flex-col gap-8">
           <p>
@@ -50,19 +63,37 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
             {event.description}
           </p>
           <p>
-            {' '}
             <span className="font-bold">Gift: </span>
             {event.isDone ? (
               <span>{event.gift}</span>
             ) : (
               <span className="text-slate-500">
-                Подарок откроется после верного ответа
+                The gift will be available after the correct answer.
               </span>
             )}
           </p>
         </div>
       </EventCardBase>
-      <AnswerForm start={start} />
+      {isUserLoading && (
+        <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-500">
+          Checking user role...
+        </p>
+      )}
+
+      {isChild && <AnswerForm start={start} />}
+
+      {isParent && (
+        <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          You are viewing this task as a parent. Answers can be submitted only
+          by child users.
+        </p>
+      )}
+
+      {!isUserLoading && !user && (
+        <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          Login as child to submit an answer.
+        </p>
+      )}
     </div>
   );
 };

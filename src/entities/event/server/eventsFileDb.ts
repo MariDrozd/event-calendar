@@ -29,8 +29,6 @@ export async function getEventByStart(start: string) {
   return events.find((e) => e.start === start) ?? null;
 }
 
-
-
 export async function patchEvent(start: string, data: Partial<EventTask>) {
   const events = await readEvents();
   const idx = events.findIndex((e) => e.start === start);
@@ -40,18 +38,16 @@ export async function patchEvent(start: string, data: Partial<EventTask>) {
 
   next.isDone = next.end !== null;
 
-  events[idx] = next;;
+  events[idx] = next;
   await writeEvents(events);
   return events[idx];
 }
 
 export async function patchEventEnd(start: string, end: string | null) {
-  return await patchEvent(start, {end})
+  return await patchEvent(start, { end });
 }
 
-export async function createEvent(
-  payload: EventCreateRequest,
-) {
+export async function createEvent(payload: EventCreateRequest) {
   const events = await readEvents();
 
   const exists = events.some((event) => event.start === payload.start);

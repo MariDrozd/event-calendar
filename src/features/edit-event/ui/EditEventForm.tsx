@@ -9,6 +9,7 @@ import { fetchPatchEvent } from '@/src/entities/event/api/client';
 import { Input } from '@/src/shared/ui/input';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Textarea } from '@/src/shared/ui/textarea';
+import { Button } from '@/src/shared/ui/button';
 
 const editEventSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -78,7 +79,16 @@ export const EditEventForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-2 border-2 p-3 w-full"
+      className="
+        mt-3
+        w-full
+        rounded-xl
+        border border-slate-200
+        bg-slate-50/80
+        p-5
+        shadow-sm
+        flex flex-col gap-4
+      "
     >
       <FormField error={errors.title?.message} label="Title">
         <Input {...register('title')} placeholder="Title"></Input>
@@ -97,21 +107,31 @@ export const EditEventForm = ({
       <FormField error={errors.gift?.message} label="Gift">
         <Input {...register('gift')} placeholder="Gift"></Input>
       </FormField>
-      <div className="flex justify-end gap-2">
-        <button
-          className="w-20 h-5 border-2 border-green-600"
-          type="submit"
-          disabled={isSubmitting || editEventMutation.isPending}
-        >
-          Edit
-        </button>
-        <button
-          className="w-[80px] h-[20px] border-2 border-amber-600"
-          type="button"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
+      <div className="flex flex-col gap-1">
+        <div className="flex justify-end gap-2">
+          <Button
+            size="sm"
+            type="submit"
+            disabled={isSubmitting || editEventMutation.isPending}
+            className="min-w-25"
+          >
+            Save
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            type="button"
+            onClick={onCancel}
+            className="min-w-25"
+          >
+            Cancel
+          </Button>
+        </div>
+        {editEventMutation.isError && (
+          <p className="text-xs text-rose-600">
+            {editEventMutation.error.message}
+          </p>
+        )}
       </div>
     </form>
   );

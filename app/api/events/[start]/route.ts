@@ -1,8 +1,4 @@
-import { toEventDetails } from '@/src/entities/event';
-import { deleteEvent } from '@/src/entities/event/server';
-import { patchEvent } from '@/src/entities/event/server/eventsFileDb';
 import { loadEventDetails } from '@/src/entities/event/server/loader';
-import { denyIfNotParent } from '@/src/entities/user/server';
 import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
@@ -10,13 +6,8 @@ export const GET = async (
   _req: Request,
   { params }: { params: Promise<{ start: string }> },
 ) => {
-  console.log('start');
   const { start } = await params;
-  console.log('start', start);
-
   const eventDto = await loadEventDetails(start);
-
-  console.log('event', eventDto);
 
   if (!eventDto) {
     return NextResponse.json({ error: 'Event not found' }, { status: 404 });
@@ -24,5 +15,3 @@ export const GET = async (
 
   return NextResponse.json(eventDto, { status: 200 });
 };
-
-

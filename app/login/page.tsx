@@ -1,12 +1,7 @@
-import { LoginForm } from "@/src/features/auth";
+import { LoginForm } from '@/src/features/auth';
 
 const LoginPage = () => {
-
-
-
-	return (
-		<LoginForm/>
-	)
-}
+  return <LoginForm />;
+};
 
 export default LoginPage;

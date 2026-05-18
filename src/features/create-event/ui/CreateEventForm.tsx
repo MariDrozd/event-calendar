@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Input } from '@/src/shared/ui/input';
 import { Textarea } from '@/src/shared/ui/textarea';
+import { Button } from '@/src/shared/ui/button';
 
 const createEventSchema = z.object({
   start: z.string().trim().min(1, 'Start date is required'),
@@ -28,9 +29,11 @@ const defaultValues: CreateEventFormValues = {
   gift: '',
 };
 
+type CreateEventFormProps = {
+  onCancel: () => void;
+};
 
-
-export const CreateEventForm = () => {
+export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
   const {
     register,
     handleSubmit,
@@ -47,13 +50,12 @@ export const CreateEventForm = () => {
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-
-  return () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-}, []);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const qc = useQueryClient();
 
@@ -91,16 +93,23 @@ export const CreateEventForm = () => {
     setSuccessMessage('');
 
     if (timeoutRef.current) {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = null;
-  }
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
   };
-
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-5"
+      className="
+        w-full
+        rounded-xl
+        border border-slate-200
+        bg-white
+        p-5
+        shadow-sm
+        flex flex-col gap-4
+      "
     >
       <FormField error={errors.start?.message} label="Start date">
         <Input
@@ -126,23 +135,44 @@ export const CreateEventForm = () => {
       <FormField error={errors.gift?.message} label="Gift">
         <Input {...register('gift')} placeholder="Gift"></Input>
       </FormField>
-      <div className="flex gap-2"></div>
-      <button
-        className="w-20 h-5"
-        type="submit"
-        disabled={isSubmitting || createEvent.isPending}
-      >
-        {createEvent.isPending ? 'Creating...' : 'Create'}
-      </button>
-      <button className="w-20 h-5" type="button" onClick={onClear}>
-        Clear all
-      </button>
-      {createEvent.isError && (
-        <p className="text-sm text-red-600">{createEvent.error.message}</p>
-      )}
-      {successMessage && (
-        <p className="text-sm text-green-600">{successMessage}</p>
-      )}
+      <div className="flex flex-col gap-1">
+        <div className="flex justify-end gap-2">
+          <Button
+            size="sm"
+            type="submit"
+            disabled={isSubmitting || createEvent.isPending}
+            className="min-w-25"
+          >
+            {createEvent.isPending ? 'Creating...' : 'Create'}
+          </Button>
+
+          <Button
+            size="sm"
+            variant="secondary"
+            type="button"
+            onClick={onClear}
+            className="min-w-25"
+          >
+            Clear
+          </Button>
+
+          <Button
+            size="sm"
+            variant="secondary"
+            type="button"
+            onClick={onCancel}
+            className="min-w-25"
+          >
+            Cancel
+          </Button>
+        </div>
+        {createEvent.isError && (
+          <p className="text-sm text-rose-400">{createEvent.error.message}</p>
+        )}
+        {successMessage && (
+          <p className="text-sm text-cyan-400">{successMessage}</p>
+        )}
+      </div>
     </form>
   );
 };

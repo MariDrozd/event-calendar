@@ -1,4 +1,5 @@
 import { getEventByStart, patchEventEnd } from '@/src/entities/event/server';
+import { denyIfNotChild } from '@/src/entities/user/server';
 import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
@@ -6,9 +7,8 @@ export const POST = async (
   req: Request,
   { params }: { params: Promise<{ start: string }> },
 ) => {
-  // вернуть после тестов
-  // const denied = await denyIfNotChild();
-  // if (denied) return denied;
+  const denied = await denyIfNotChild();
+  if (denied) return denied;
 
   const { start } = await params;
 
@@ -16,13 +16,11 @@ export const POST = async (
 
   try {
     body = await req.json();
-    console.log('body', body);
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
   const answer = typeof body?.answer === 'string' ? body.answer : '';
-  console.log('answer', answer);
   if (!answer) {
     return NextResponse.json({ error: 'Missing answer' }, { status: 400 });
   }
@@ -31,9 +29,7 @@ export const POST = async (
   if (!event) {
     return NextResponse.json({ error: 'Event not found' }, { status: 404 });
   }
-  console.log('event.answer', event.answer);
   const isCorrectAnswer = answer.trim() === event.answer.trim();
-  console.log('isCorrectAnswer', isCorrectAnswer);
 
   if (isCorrectAnswer) {
     if (event.end === null) {

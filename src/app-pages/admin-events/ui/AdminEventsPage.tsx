@@ -12,8 +12,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { AdminEventsList } from './AdminEventsList';
 import { CreateEvent } from '@/src/features/create-event';
+import { AdminEventsFilters } from './AdminEventsFilters';
 
-type StatusFilter = 'all' | 'active' | 'done';
+export type StatusFilter = 'all' | 'active' | 'done';
 
 export const AdminEventsPage = () => {
   const {
@@ -78,33 +79,16 @@ export const AdminEventsPage = () => {
   };
 
   return (
-    <section className="space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">Admin Events</h1>
-      </header>
-      <div className="flex flex-col gap-4">
-        <label className="flex flex-col gap-2">
-          <span>Search by title:</span>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            type="text"
-            placeholder="Search"
-            className="rounded-b-md p-4"
-          />
-        </label>
-        <label className="flex gap-2">
-          <span>Status:</span>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="done">Done</option>
-          </select>
-        </label>
-      </div>
+    <section className="mx-auto max-w-6xl space-y-6">
+      <h1 className="text-2xl font-semibold">Admin Events</h1>
+
+      <AdminEventsFilters
+        search={search}
+        statusFilter={statusFilter}
+        onSearchChange={setSearch}
+        onStatusFilterChange={setStatusFilter}
+      />
+
       <CreateEvent />
       <DndContext onDragEnd={handleDragEnd}>
         <div className="flex flex-col gap-10">
@@ -120,7 +104,9 @@ export const AdminEventsPage = () => {
           {!isPending && !isError && filteredEvents.length > 0 && (
             <AdminEventsList events={filteredEvents} />
           )}
-          <TrashDropZone />
+          <div className="fixed right-8 bottom-8 z-50">
+            <TrashDropZone />
+          </div>
         </div>
       </DndContext>
     </section>

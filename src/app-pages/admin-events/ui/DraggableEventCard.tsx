@@ -30,18 +30,36 @@ export const DraggableEventCard = ({ event }: DraggableEventCardProps) => {
       style={style}
       className={clsx(
         isDragging && 'opacity-50',
-        'text-sm flex flex-col gap-1 border p-2 rounded-md',
+        'text-sm',
+        'flex flex-col gap-1',
+        'rounded-xl',
+        'border border-slate-200',
+        'bg-white',
+        'p-4',
+        'shadow-sm',
+        'transition-colors duration-200',
+        'hover:border-slate-300',
+        'relative'
       )}
     >
       <button
+        type='button'
         {...attributes}
         {...listeners}
         style={{ cursor: 'grab' }}
-        className="w-fit cursor-grab active:cursor-grabbing p-1"
+        className="
+          absolute top-1 right-1
+          cursor-grab
+          rounded-md
+          h-12 w-12 p-1
+          text-slate-500
+          hover:bg-slate-100
+          active:cursor-grabbing
+        "
         aria-label="Drag event"
         title="Drag to delete"
       >
-        <GripVertical size={18} />
+        <GripVertical size={22} />
       </button>
       <AdminEventCard event={event} />
     </div>

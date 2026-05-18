@@ -12,9 +12,9 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <div className='pt-18 p-8'>
+          <main className='pt-18 p-8 min-h-screen bg-slate-50 text-slate-900'>
           {children}
-          </div>
+          </main>
         </Providers>
       </body>
     </html>

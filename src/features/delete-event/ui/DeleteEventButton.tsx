@@ -4,6 +4,7 @@ import { eventQueryKeys } from '@/src/entities/event';
 import { fetchDeleteEvent } from '@/src/entities/event/api/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/src/shared/ui/button';
 
 interface DeleteEventButtonProps {
   start: string;
@@ -42,12 +43,13 @@ export const DeleteEventButton = (props: DeleteEventButtonProps) => {
   };
 
   return (
-    <button
+    <Button
       onClick={handleDeleteEvent}
       disabled={deleteEvent.isPending}
-      className="border-2 border-pink-600 w-20 h-10"
+      variant='danger'
+      className='min-w-25'
     >
       {deleteEvent.isPending ? 'Deleting...' : 'Delete'}
-    </button>
+    </Button>
   );
 };

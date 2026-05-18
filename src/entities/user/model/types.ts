@@ -1,4 +1,4 @@
-export type UserRole = "parent" | "child";
+export type UserRole = 'parent' | 'child';
 
 export type User = {
   id: string;
@@ -7,9 +7,9 @@ export type User = {
   pinHash: string;
 };
 
-export type UserDTO = Omit<User, 'pinHash'>
+export type UserDTO = Omit<User, 'pinHash'>;
 
 export type Candidate = {
-	name: string;
-	pin: string;
-}
+  name: string;
+  pin: string;
+};

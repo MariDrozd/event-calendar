@@ -3,11 +3,12 @@
 import { eventQueryKeys } from '@/src/entities/event';
 import { fetchCheckAnswer } from '@/src/entities/event/api/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { Button } from '@/src/shared/ui/button';
+import { Input } from '@/src/shared/ui/input';
 
 export const AnswerForm = ({ start }: { start: string }) => {
   const [answer, setAnswer] = useState('');
-
   const qc = useQueryClient();
 
   const mutation = useMutation({
@@ -24,47 +25,50 @@ export const AnswerForm = ({ start }: { start: string }) => {
   });
 
   const onCheck = () => {
-
     if (!answer.trim() || mutation.isPending) return;
-
     mutation.mutate({ start, answer });
   };
-  console.log('mutation.data.isCorrect', mutation);
 
-  const isCorrect = mutation.data?.isCorrectAnswer === true;
+  const onChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
+    setAnswer(e.target.value);
+
+    if (mutation.isSuccess || mutation.isError) {
+      mutation.reset();
+    }
+  };
 
   return (
-    <section className="mt-6">
-      <h3>Check answer:</h3>
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h3 className="font-bold text-slate-900">Check answer:</h3>
 
-      <div className="flex gap-2 mt-2 items-center">
-        <input
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          placeholder="Введи ответ"
-          className="flex flex-1 p-2"
-        />
-        <button
+      <div className="mt-3 flex gap-2">
+        <Input value={answer} onChange={onChangeAnswer} placeholder="Answer" />
+        <Button
+          type="button"
           onClick={onCheck}
-          disabled={mutation.isPending}
-          className="px-2 py-3 border border-(--btn-border)"
+          disabled={mutation.isPending || !answer.trim()}
         >
-          {mutation.isPending ? 'Проверяю...' : 'Проверить'}
-        </button>
+          {mutation.isPending ? 'Checking...' : 'Check'}
+        </Button>
       </div>
 
       {mutation.isError && (
-        <p className="mt-2">
+        <p className="mt-3 text-sm text-rose-400">
           Error:{' '}
-          {mutation.error.message ?? 'Произошла ошибка при проверке ответа'}
+          {mutation.error.message ??
+            'Something went wrong while checking the answer'}
         </p>
       )}
 
       {mutation.isSuccess && (
-        <p className="mt-2">
-          {mutation.data.isCorrectAnswer
-            ? 'Верно. Подарок доступен'
-            : 'Неверно. Попробуй ещё раз.'}
+        <p className="mt-2 text-xs">
+          {mutation.data.isCorrectAnswer ? (
+            <span className="text-cyan-400">
+              Correct. The gift is now unlocked.
+            </span>
+          ) : (
+            <span className="text-rose-400">Incorrect. Try again.</span>
+          )}
         </p>
       )}
     </section>
