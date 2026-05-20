@@ -80,7 +80,14 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
         </p>
       )}
 
-      {isChild && <AnswerForm start={start} />}
+      {isChild &&
+        (event.isDone ? (
+          <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-5 text-sm text-cyan-800">
+            Congratulations! You unlocked your gift.
+          </div>
+        ) : (
+          <AnswerForm start={start} />
+        ))}
 
       {isParent && (
         <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">

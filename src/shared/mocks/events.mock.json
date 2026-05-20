@@ -1,273 +1,276 @@
 [
   {
     "id": "1",
-    "title": "День 1. Русский алфавит",
-    "description": "Напечатай заглавными буквами весь русский алфавит подряд без пробелов.",
-    "answer": "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ",
+    "title": "Day 1. Alphabet warm-up",
+    "description": "Type the first ten uppercase letters of the English alphabet without spaces.",
+    "answer": "ABCDEFGHIJ",
     "start": "2025-12-01",
     "end": null,
-    "gift": "Наклейка с буквой"
+    "gift": "Alphabet sticker"
   },
   {
     "id": "2",
-    "title": "День 2. Примеры на сложение и вычитание",
-    "description": "Реши примеры: 10+5, 5+7, 12-4, 17+8. Запиши подряд все ответы без пробелов.",
+    "title": "Day 2. Addition and subtraction",
+    "description": "Solve: 10+5, 5+7, 12-4, 17+8. Write all answers in order without spaces.",
     "answer": "1512825",
     "start": "2025-12-02",
     "end": null,
-    "gift": "Маленький сладкий сюрприз"
+    "gift": "Small sweet surprise"
   },
   {
     "id": "3",
-    "title": "День 3. Цифры от 1 до 10",
-    "description": "Напиши цифрами числа от 1 до 10 в порядке возрастания через запятую без пробелов.",
+    "title": "Day 3. Numbers from 1 to 10",
+    "description": "Write the numbers from 1 to 10 separated by commas without spaces.",
     "answer": "1,2,3,4,5,6,7,8,9,10",
     "start": "2025-12-03",
     "end": null,
-    "gift": "Наклейка с цифрой"
+    "gift": "Number sticker"
   },
   {
     "id": "4",
-    "title": "День 4. Простые примеры",
-    "description": "Реши примеры: 2+3, 4+2, 9-5, 7-2. Запиши подряд все ответы без пробелов.",
+    "title": "Day 4. Simple math",
+    "description": "Solve: 2+3, 4+2, 9-5, 7-2. Write all answers in order without spaces.",
     "answer": "5645",
     "start": "2025-12-04",
     "end": null,
-    "gift": "5 минут настольной игры с родителями"
+    "gift": "5 minutes of board game time"
   },
   {
     "id": "5",
-    "title": "День 5. Английские числа",
-    "description": "Напиши по-английски числа от 1 до 5 маленькими буквами через пробел: one two three four five.",
+    "title": "Day 5. Number words",
+    "description": "Write the numbers from 1 to 5 in English lowercase words separated by spaces.",
     "answer": "one two three four five",
     "start": "2025-12-05",
     "end": "2026-05-17",
-    "gift": "Красивый стикер в тетрадь",
+    "gift": "Notebook sticker",
     "isDone": true
   },
   {
     "id": "6",
-    "title": "День 6. Чётные числа до 20",
-    "description": "Напиши цифрами все чётные числа от 2 до 20 через запятую без пробелов.",
+    "title": "Day 6. Even numbers",
+    "description": "Write all even numbers from 2 to 20 separated by commas without spaces.",
     "answer": "2,4,6,8,10,12,14,16,18,20",
     "start": "2025-12-06",
     "end": null,
-    "gift": "Выбор сказки на ночь"
+    "gift": "Choose tonight's bedtime story"
   },
   {
     "id": "7",
-    "title": "День 7. Гласные буквы",
-    "description": "Напиши заглавными буквами все гласные русского алфавита через запятую без пробелов.",
-    "answer": "А,Е,Ё,И,О,У,Ы,Э,Ю,Я",
+    "title": "Day 7. Vowels",
+    "description": "Write the English vowels in uppercase letters separated by commas without spaces.",
+    "answer": "A,E,I,O,U",
     "start": "2025-12-07",
     "end": null,
-    "gift": "Наклейка с буквой и рисунком"
+    "gift": "Letter sticker with a picture"
   },
   {
     "id": "8",
-    "title": "День 8. Слово МАМА",
-    "description": "Напиши слово «мама» заглавными русскими буквами.",
-    "answer": "МАМА",
+    "title": "Day 8. Family word",
+    "description": "Type the word MOM in uppercase letters.",
+    "answer": "MOM",
     "start": "2025-12-08",
     "end": "2026-02-26",
-    "gift": "Обнимашки и маленький приз"
+    "gift": "Hugs and a small prize"
   },
   {
     "id": "9",
-    "title": "День 9. Слово CAT",
-    "description": "Напиши по-английски слово «кот» маленькими буквами.",
+    "title": "Day 9. Animal word",
+    "description": "Type the English word for a small furry animal that says meow in lowercase letters.",
     "answer": "cat",
     "start": "2025-12-09",
-    "end": null,
-    "gift": "Магнитик с котом"
+    "end": "2026-05-20",
+    "gift": "Cat magnet",
+    "isDone": true
   },
   {
     "id": "10",
-    "title": "День 10. Знаки больше-меньше",
-    "description": "Сравни числа и запиши подряд знаки без пробелов: 5 ? 3, 2 ? 8, 10 ? 10. Используй только знаки <, > или =.",
+    "title": "Day 10. Compare numbers",
+    "description": "Compare the numbers and write only the signs without spaces: 5 ? 3, 2 ? 8, 10 ? 10. Use <, >, or =.",
     "answer": "><=",
     "start": "2025-12-10",
     "end": null,
-    "gift": "Дополнительная сказка перед сном"
+    "gift": "Extra bedtime story"
   },
   {
     "id": "11",
-    "title": "День 11. Примеры до 20",
-    "description": "Реши примеры: 6+4, 9+1, 15-5. Запиши подряд все ответы без пробелов.",
+    "title": "Day 11. Math up to 20",
+    "description": "Solve: 6+4, 9+1, 15-5. Write all answers in order without spaces.",
     "answer": "101010",
     "start": "2025-12-11",
     "end": null,
-    "gift": "Наклейка с цифрами"
+    "gift": "Number stickers"
   },
   {
     "id": "12",
-    "title": "День 12. Английские цвета",
-    "description": "Напиши по-английски три цвета маленькими буквами через запятую без пробелов: красный, синий, зелёный.",
+    "title": "Day 12. Colors",
+    "description": "Write these colors in English lowercase letters separated by commas without spaces: red, blue, green.",
     "answer": "red,blue,green",
     "start": "2025-12-12",
     "end": null,
-    "gift": "Раскраска на один лист"
+    "gift": "One-page coloring sheet"
   },
   {
     "id": "13",
-    "title": "День 13. Слово ЗИМА",
-    "description": "Напиши заглавными русскими буквами слово «зима».",
-    "answer": "ЗИМА",
+    "title": "Day 13. Winter word",
+    "description": "Type the word WINTER in uppercase letters.",
+    "answer": "WINTER",
     "start": "2025-12-13",
     "end": null,
-    "gift": "Бумажная снежинка для комнаты"
+    "gift": "Paper snowflake for the room"
   },
   {
     "id": "14",
-    "title": "День 14. Первые буквы алфавита",
-    "description": "Напиши заглавными русскими буквами подряд без пробелов первые пять букв алфавита.",
-    "answer": "АБВГД",
+    "title": "Day 14. First alphabet letters",
+    "description": "Type the first five uppercase letters of the English alphabet without spaces.",
+    "answer": "ABCDE",
     "start": "2025-12-14",
     "end": null,
-    "gift": "Наклейка с ёлочкой"
+    "gift": "Little tree sticker"
   },
   {
     "id": "15",
-    "title": "День 15. Слово SNOW",
-    "description": "Напиши по-английски слово «снег» маленькими буквами.",
+    "title": "Day 15. Snow word",
+    "description": "Type the English word for white winter flakes in lowercase letters.",
     "answer": "snow",
     "start": "2025-12-15",
     "end": null,
-    "gift": "Маленькая бумажная гирлянда"
+    "gift": "Small paper garland"
   },
   {
     "id": "16",
-    "title": "День 16. Яблоки",
-    "description": "У тебя 3 яблока и ещё 4 яблока. Сколько всего яблок? Ответ запиши числом.",
+    "title": "Day 16. Apples",
+    "description": "You have 3 apples and get 4 more apples. How many apples do you have in total? Write the answer as a number.",
     "answer": "7",
     "start": "2025-12-16",
-    "end": null,
-    "gift": "Выбор фрукта к ужину"
+    "end": "2026-05-20",
+    "gift": "Choose a fruit for dinner",
+    "isDone": true
   },
   {
     "id": "17",
-    "title": "День 17. Ещё примеры",
-    "description": "Реши примеры: 7+3, 12-2, 5+6. Запиши подряд все ответы без пробелов.",
+    "title": "Day 17. More math",
+    "description": "Solve: 7+3, 12-2, 5+6. Write all answers in order without spaces.",
     "answer": "101011",
     "start": "2025-12-17",
     "end": null,
-    "gift": "Наклейка с животным"
+    "gift": "Animal sticker"
   },
   {
     "id": "18",
-    "title": "День 18. Обратный счёт",
-    "description": "Напиши цифрами числа от 5 до 1 в порядке убывания через запятую без пробелов.",
+    "title": "Day 18. Countdown",
+    "description": "Write the numbers from 5 to 1 in descending order separated by commas without spaces.",
     "answer": "5,4,3,2,1",
     "start": "2025-12-18",
     "end": null,
-    "gift": "5 минут дополнительной игры"
+    "gift": "5 extra minutes of playtime"
   },
   {
     "id": "19",
-    "title": "День 19. Слово ПАПА",
-    "description": "Напиши заглавными русскими буквами слово «папа».",
-    "answer": "ПАПА",
+    "title": "Day 19. Family word",
+    "description": "Type the word DAD in uppercase letters.",
+    "answer": "DAD",
     "start": "2025-12-19",
     "end": null,
-    "gift": "Рисунок от папы или вместе с ним"
+    "gift": "A drawing from dad or together with dad"
   },
   {
     "id": "20",
-    "title": "День 20. Английский алфавит (начало)",
-    "description": "Напиши заглавными английскими буквами первые пять букв алфавита подряд без пробелов.",
+    "title": "Day 20. Alphabet start",
+    "description": "Type the first five uppercase letters of the English alphabet without spaces.",
     "answer": "ABCDE",
     "start": "2025-12-20",
     "end": null,
-    "gift": "Яркая буква-наклейка на тетрадь"
+    "gift": "Bright letter sticker for a notebook"
   },
   {
     "id": "21",
-    "title": "День 21. Больше на один",
-    "description": "Запиши подряд без пробелов ответы на примеры: 3+1, 6+1, 9+1.",
+    "title": "Day 21. One more",
+    "description": "Write the answers without spaces: 3+1, 6+1, 9+1.",
     "answer": "4710",
     "start": "2025-12-21",
     "end": null,
-    "gift": "Выбор мультика на вечер (5–10 минут)"
+    "gift": "Choose a short cartoon for the evening"
   },
   {
     "id": "22",
-    "title": "День 22. Меньше на один",
-    "description": "Запиши подряд без пробелов ответы на примеры: 5-1, 10-1, 8-1.",
+    "title": "Day 22. One less",
+    "description": "Write the answers without spaces: 5-1, 10-1, 8-1.",
     "answer": "497",
     "start": "2025-12-22",
     "end": null,
-    "gift": "Наклейка со снежинкой"
+    "gift": "Snowflake sticker"
   },
   {
     "id": "23",
-    "title": "День 23. Десятки",
-    "description": "Напиши цифрами через запятую без пробелов числа: десять, двадцать, тридцать.",
+    "title": "Day 23. Tens",
+    "description": "Write these numbers as digits separated by commas without spaces: ten, twenty, thirty.",
     "answer": "10,20,30",
     "start": "2025-12-23",
     "end": null,
-    "gift": "Небольшая открытка с рисунком"
+    "gift": "Small card with a drawing"
   },
   {
     "id": "24",
-    "title": "День 24. Зимние слова по-английски",
-    "description": "Напиши по-английски три слова маленькими буквами через запятую без пробелов: снег (snow), ёлка (tree), подарок (gift).",
+    "title": "Day 24. Winter words",
+    "description": "Write these winter words in lowercase letters separated by commas without spaces: snow, tree, gift.",
     "answer": "snow,tree,gift",
     "start": "2025-12-24",
     "end": null,
-    "gift": "Украшение для ёлки"
+    "gift": "Christmas tree decoration"
   },
   {
     "id": "25",
-    "title": "День 25. Примеры с нулём",
-    "description": "Реши примеры: 5+0, 0+7, 9-0. Запиши подряд все ответы без пробелов.",
+    "title": "Day 25. Math with zero",
+    "description": "Solve: 5+0, 0+7, 9-0. Write all answers in order without spaces.",
     "answer": "579",
     "start": "2025-12-25",
     "end": null,
-    "gift": "Маленький сюрприз под ёлкой"
+    "gift": "Small surprise under the tree"
   },
   {
     "id": "26",
-    "title": "День 26. Сложение до 10",
-    "description": "Реши примеры: 1+2, 3+4, 2+5. Запиши подряд все ответы без пробелов.",
+    "title": "Day 26. Addition up to 10",
+    "description": "Solve: 1+2, 3+4, 2+5. Write all answers in order without spaces.",
     "answer": "377",
     "start": "2025-12-26",
     "end": null,
-    "gift": "Наклейка с сердечком"
+    "gift": "Heart sticker"
   },
   {
     "id": "27",
-    "title": "День 27. Животные по-английски",
-    "description": "Напиши по-английски три животных маленькими буквами через запятую без пробелов: кот (cat), собака (dog), лиса (fox).",
+    "title": "Day 27. Animals",
+    "description": "Write these animals in lowercase letters separated by commas without spaces: cat, dog, fox.",
     "answer": "cat,dog,fox",
     "start": "2025-12-27",
     "end": null,
-    "gift": "Раскраска с животными (1 лист)"
+    "gift": "One-page animal coloring sheet"
   },
   {
     "id": "28",
-    "title": "День 28. Ёлочные шары",
-    "description": "На ёлке висит 4 шара, мама повесила ещё 6. Сколько шаров стало? Ответ запиши числом.",
+    "title": "Day 28. Tree ornaments",
+    "description": "There are 4 ornaments on the tree. Mom adds 6 more. How many ornaments are there now? Write the answer as a number.",
     "answer": "10",
     "start": "2025-12-28",
     "end": null,
-    "gift": "Выбор нового шарика на ёлку (нарисовать или повесить)"
+    "gift": "Choose or draw a new tree ornament"
   },
   {
     "id": "29",
-    "title": "День 29. Фраза I am six",
-    "description": "Напиши по-английски фразу «Мне шесть лет» как в подсказке: I am six. Впиши её точно так же.",
+    "title": "Day 29. Sentence practice",
+    "description": "Type this sentence exactly: I am six.",
     "answer": "I am six",
     "start": "2025-12-29",
     "end": null,
-    "gift": "Дополнительные 5 минут игры перед сном"
+    "gift": "5 extra minutes of bedtime play"
   },
   {
     "id": "30",
-    "title": "День 30. Сложение и вычитание",
-    "description": "Реши примеры: 20-5, 3+7, 9+9. Запиши подряд все ответы без пробелов.",
+    "title": "Day 30. Final math",
+    "description": "Solve: 20-5, 3+7, 9+9. Write all answers in order without spaces.",
     "answer": "151018",
     "start": "2025-12-30",
-    "end": null,
-    "gift": "Небольшой праздничный стикер"
+    "end": "2026-05-20",
+    "gift": "Small holiday sticker",
+    "isDone": true
   }
 ]

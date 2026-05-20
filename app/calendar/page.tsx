@@ -1,4 +1,5 @@
 import { CalendarEventsList } from '@/src/app-pages/calendar-events-list';
+import { eventQueryKeys } from '@/src/entities/event';
 import { loadEventList } from '@/src/entities/event/server';
 import { getQueryClient } from '@/src/shared/lib/react-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -8,7 +9,7 @@ const CalendarPage = async () => {
   const qc = getQueryClient();
 
   await qc.prefetchQuery({
-    queryKey: ['events'],
+    queryKey: eventQueryKeys.publicList,
     queryFn: loadEventList,
   });
 

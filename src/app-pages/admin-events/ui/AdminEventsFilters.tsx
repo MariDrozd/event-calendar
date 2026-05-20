@@ -22,19 +22,21 @@ export const AdminEventsFilters = (props: AdminEventsFilterProps) => {
       "
     >
       <div className="grid gap-4 md:grid-cols-[1fr_220px]">
-      <FormField label="Search by title: ">
-        <Input
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          type="text"
-          placeholder="Search"
-        />
-      </FormField>
-      <FormField label="Status: ">
-        <select
-          value={statusFilter}
-          onChange={(e) => onStatusFilterChange(e.target.value as StatusFilter)}
-          className="
+        <FormField label="Search by title: ">
+          <Input
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            type="text"
+            placeholder="Search"
+          />
+        </FormField>
+        <FormField label="Status: ">
+          <select
+            value={statusFilter}
+            onChange={(e) =>
+              onStatusFilterChange(e.target.value as StatusFilter)
+            }
+            className="
             w-full
             rounded-md border border-slate-300 outline-none
             bg-white 
@@ -43,13 +45,13 @@ export const AdminEventsFilters = (props: AdminEventsFilterProps) => {
             transition 
             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100
           "
-        >
-          <option value="all">All</option>
-          <option value="active">Active</option>
-          <option value="done">Done</option>
-        </select>
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="done">Done</option>
+          </select>
         </FormField>
-        </div>
+      </div>
     </div>
   );
 };

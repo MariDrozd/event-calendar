@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const loginSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
-  pin: z.string().trim().min(4, "Password must be at least 4 characters"),
+  pin: z.string().trim().min(4, 'Password must be at least 4 characters'),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -52,7 +52,7 @@ export const LoginForm = () => {
 
   return (
     <form
-			className="
+      className="
 			mx-auto flex w-full 
 			max-w-md  p-6 mt-10
 			flex-col gap-4 
@@ -60,8 +60,8 @@ export const LoginForm = () => {
 			bg-white
 			shadow-sm"
       onSubmit={handleSubmit(onSubmit)}
-		>
-			<div>
+    >
+      <div>
         <h1 className="text-2xl font-semibold text-slate-900">Login</h1>
         <p className="mt-1 text-sm text-slate-500">
           Enter your name and PIN to continue.
@@ -80,7 +80,9 @@ export const LoginForm = () => {
       <Button type="submit" disabled={login.isPending || isSubmitting}>
         {login.isPending ? 'Login...' : 'Login'}
       </Button>
-      {login.isError && <p className="text-sm text-rose-500">Invalid login credentials</p>}
+      {login.isError && (
+        <p className="text-sm text-rose-500">Invalid login credentials</p>
+      )}
     </form>
   );
 };

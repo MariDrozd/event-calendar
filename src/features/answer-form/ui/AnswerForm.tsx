@@ -60,15 +60,9 @@ export const AnswerForm = ({ start }: { start: string }) => {
         </p>
       )}
 
-      {mutation.isSuccess && (
+      {mutation.isSuccess && !mutation.data.isCorrectAnswer && (
         <p className="mt-2 text-xs">
-          {mutation.data.isCorrectAnswer ? (
-            <span className="text-cyan-400">
-              Correct. The gift is now unlocked.
-            </span>
-          ) : (
-            <span className="text-rose-400">Incorrect. Try again.</span>
-          )}
+          <span className="text-rose-400">Incorrect. Try again.</span>
         </p>
       )}
     </section>

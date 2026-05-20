@@ -1,6 +1,6 @@
 'use client';
 
-import { type EventTask } from '@/src/entities/event';
+import { eventQueryKeys, type EventTask } from '@/src/entities/event';
 import {
   fetchAdminEvents,
   fetchDeleteEvent,
@@ -23,7 +23,7 @@ export const AdminEventsPage = () => {
     isError,
     error,
   } = useQuery<EventTask[], Error>({
-    queryKey: ['admin-events'],
+    queryKey: eventQueryKeys.adminList,
     queryFn: fetchAdminEvents,
   });
 
@@ -53,7 +53,7 @@ export const AdminEventsPage = () => {
     mutationFn: fetchDeleteEvent,
     onSuccess: () => {
       qc.invalidateQueries({
-        queryKey: ['admin-events'],
+        queryKey: eventQueryKeys.adminList,
       });
     },
   });
