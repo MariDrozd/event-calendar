@@ -1,0 +1,1 @@
+export { getRouteNotice, type RouteNotice } from './getRouteNotice';

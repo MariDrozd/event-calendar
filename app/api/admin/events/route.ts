@@ -6,7 +6,8 @@ import { NextResponse } from "next/server";
 export const runtime = 'nodejs';
 
 export const GET = async () => {
-	const denied = await denyIfNotParent();
+  const denied = await denyIfNotParent();
+
 	if (denied) return denied;
 	
 	const events = await getAllEvents();

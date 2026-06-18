@@ -1,5 +1,6 @@
-"use client"
+'use client';
 
+import { userQueryKeys } from '@/src/entities/user';
 import { fetchLogout } from '@/src/entities/user/api/client';
 import { Button } from '@/src/shared/ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,8 +13,8 @@ export const LogoutButton = () => {
   const logout = useMutation({
     mutationFn: fetchLogout,
     onSuccess: () => {
-      qc.setQueryData(['me'], null);
-      qc.removeQueries({ queryKey: ['me'] });
+      qc.setQueryData(userQueryKeys.me, null);
+      qc.invalidateQueries({ queryKey: userQueryKeys.me });
       router.replace('/login');
     },
   });
@@ -23,14 +24,14 @@ export const LogoutButton = () => {
   };
 
   return (
-
     <Button
       type="button"
       size="sm"
       variant="secondary"
       disabled={logout.isPending}
-      onClick={onLogoutHandler}>
-      {logout.isPending ? "Logout..." : "Logout"}
+      onClick={onLogoutHandler}
+    >
+      {logout.isPending ? 'Logout...' : 'Logout'}
     </Button>
   );
 };

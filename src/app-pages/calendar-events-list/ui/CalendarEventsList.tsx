@@ -8,8 +8,14 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/src/shared/ui/button';
 import { LinkButton } from '@/src/shared/ui/link-button';
+import { Notice } from '@/src/shared/ui/notice';
+import type { NoticeData } from '@/src/shared/types/notice';
 
-export const CalendarEventsList = () => {
+type CalendarEventsListProps = {
+  notice: NoticeData | null;
+};
+
+export const CalendarEventsList = ({ notice }: CalendarEventsListProps) => {
   const { data, isError, error, refetch } = useQuery({
     queryKey: eventQueryKeys.publicList,
     queryFn: fetchEvents,
@@ -30,6 +36,13 @@ export const CalendarEventsList = () => {
 
   return (
     <section className="mx-auto max-w-6xl space-y-6 flex flex-col gap-3">
+      {notice && (
+        <Notice
+          title={notice.title}
+          message={notice.message}
+          variant={notice.variant}
+        />
+      )}
       <h1 className="text-2xl font-bold">Event calendar</h1>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {data.map((event) => (
@@ -54,14 +67,14 @@ export const CalendarEventsList = () => {
               isDone={event.isDone}
             />
 
-              <LinkButton
-                size='sm'
-                variant='primary'
-                href={`/calendar/${event.start}`}
-                className='mt-auto'
-              >
-                Open
-              </LinkButton>
+            <LinkButton
+              size="sm"
+              variant="primary"
+              href={`/calendar/${event.start}`}
+              className="mt-auto"
+            >
+              Open
+            </LinkButton>
           </li>
         ))}
       </ul>

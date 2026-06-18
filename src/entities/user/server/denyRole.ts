@@ -1,26 +1,27 @@
 import { NextResponse } from 'next/server';
 import { UserRole } from '../model/types';
 import { requireRole } from './guards';
+import { AuthError } from '../model/auth-error';
 
 const denyIfNotRole = async (role: UserRole): Promise<Response | null> => {
   try {
     await requireRole(role);
     return null;
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Error';
-
-    if (msg === 'Unauthorized') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    if (msg === 'Forbidden') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (err instanceof AuthError) {
+      return NextResponse.json(
+        { error: err.message },
+        { status: err.status }
+      );
     }
 
-    return NextResponse.json({ error: 'Error' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 };
 
+export const denyIfNotParent = (): Promise<Response | null> => denyIfNotRole('parent');
 
-export const denyIfNotParent = () => denyIfNotRole("parent");
-
-export const denyIfNotChild = () => denyIfNotRole("child");
+export const denyIfNotChild = (): Promise<Response | null> => denyIfNotRole('child');

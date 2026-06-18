@@ -1,7 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import { fetchLogin } from '@/src/entities/user';
+import { fetchLogin, userQueryKeys } from '@/src/entities/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -40,7 +40,7 @@ export const LoginForm = () => {
   const login = useMutation({
     mutationFn: fetchLogin,
     onSuccess: (user) => {
-      qc.setQueryData(['me'], user);
+      qc.setQueryData(userQueryKeys.me, user);
       router.replace('/calendar');
     },
   });

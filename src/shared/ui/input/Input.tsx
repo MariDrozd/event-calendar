@@ -1,12 +1,15 @@
-import { forwardRef, type InputHTMLAttributes } from "react"
+import clsx from 'clsx';
+import { forwardRef, type InputHTMLAttributes } from 'react';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ className = '', ...props }, ref) => {
-	return (
-		<input
-			ref={ref}
-			className="
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className = '', ...props }, ref) => {
+    return (
+      <input
+        ref={ref}
+        className={clsx(
+          `
 				w-full
 				rounded-md
 				border border-slate-300
@@ -16,12 +19,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ className = '',
 				outline-none
 				transition
 				focus:border-indigo-500
-				focus:ring-2 focus:ring-indigo-100
-			"
-			{...props}
-		/>
-	);
-});
-
+				focus:ring-2 focus:ring-indigo-100`,
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 Input.displayName = 'Input';
