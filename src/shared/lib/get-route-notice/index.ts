@@ -1,1 +1,1 @@
-export { getRouteNotice, type RouteNotice } from './getRouteNotice';
+export { getRouteNotice } from './getRouteNotice';
