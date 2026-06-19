@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, useState } from 'react';
 import { Button } from '@/src/shared/ui/button';
 import { Input } from '@/src/shared/ui/input';
+import { getAnswerSubmitErrorMessage } from '../model/getAnswerSubmitErrorMessage';
+import { Notice } from '@/src/shared/ui/notice';
 
 export const AnswerForm = ({ start }: { start: string }) => {
   const [answer, setAnswer] = useState('');
@@ -37,6 +39,10 @@ export const AnswerForm = ({ start }: { start: string }) => {
     }
   };
 
+  const submitError = mutation.isError
+    ? getAnswerSubmitErrorMessage(mutation.error)
+    : null;
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <h3 className="font-bold text-slate-900">Check answer:</h3>
@@ -52,18 +58,23 @@ export const AnswerForm = ({ start }: { start: string }) => {
         </Button>
       </div>
 
-      {mutation.isError && (
-        <p className="mt-3 text-sm text-rose-400">
-          Error:{' '}
-          {mutation.error.message ??
-            'Something went wrong while checking the answer'}
-        </p>
+      {submitError && (
+        <div className="mt-3">
+          <Notice
+            variant="error"
+            title={submitError.title}
+            message={submitError.message}
+          />
+        </div>
       )}
 
       {mutation.isSuccess && !mutation.data.isCorrectAnswer && (
-        <p className="mt-2 text-xs">
-          <span className="text-rose-400">Incorrect. Try again.</span>
-        </p>
+        <div className="mt-3">
+          <Notice
+            variant='info'
+            message='Wrong answer! Try again'
+          />
+        </div>
       )}
     </section>
   );

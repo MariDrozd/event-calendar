@@ -7,6 +7,7 @@ import { EventDetails } from '@/src/entities/event/model/types';
 import { AnswerForm } from '@/src/features/answer-form';
 import { useQuery } from '@tanstack/react-query';
 import { useMeQuery } from '@/src/entities/user';
+import { Notice } from '@/src/shared/ui/notice';
 
 interface CalendarEventProps {
   start: string;
@@ -82,9 +83,9 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
 
       {isChild &&
         (event.isDone ? (
-          <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-5 text-sm text-cyan-800">
-            Congratulations! You unlocked your gift.
-          </div>
+        <>
+          <Notice title='Congratulations!' message='You unlocked your gift.' variant='success' />
+          </>
         ) : (
           <AnswerForm start={start} />
         ))}

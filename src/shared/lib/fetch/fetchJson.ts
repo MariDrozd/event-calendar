@@ -1,3 +1,5 @@
+import { ApiError } from './api-error';
+
 export const fetchJson = async <T>(
   input: RequestInfo,
   init?: RequestInit,
@@ -7,7 +9,10 @@ export const fetchJson = async <T>(
   const data = await res.json().catch(() => null);
 
   if (!res.ok) {
-    throw new Error(data?.error ?? `Request failed (${res.status})`);
+    throw new ApiError(
+      res.status,
+      data?.error ?? `Request failed (${res.status})`,
+    );
   }
 
   return data as T;

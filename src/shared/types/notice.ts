@@ -1,7 +1,7 @@
-export type NoticeVariant = 'error' | 'info';
+export type NoticeVariant = 'error' | 'info' | 'success';
 
 export type NoticeData = {
   title?: string;
   message: string;
-  variant: NoticeVariant;
+  variant?: NoticeVariant;
 };
