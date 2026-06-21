@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { fetchLogin, userQueryKeys } from '@/src/entities/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Input } from '@/src/shared/ui/input';
@@ -39,14 +39,12 @@ export const LoginForm = () => {
 
   const qc = useQueryClient();
   const router = useRouter();
-  const searchParams = useSearchParams();
-const from = searchParams.get('from');
 
   const loginMutation = useMutation({
     mutationFn: fetchLogin,
     onSuccess: (user) => {
       qc.setQueryData(userQueryKeys.me, user);
-      const redirectTo = getLoginRedirectPath({user, from})
+      const redirectTo = getLoginRedirectPath(user)
       router.replace(redirectTo);
     },
   });
