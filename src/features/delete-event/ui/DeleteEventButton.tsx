@@ -1,10 +1,14 @@
 'use client';
 
+import { toast } from 'sonner';
 import { eventQueryKeys } from '@/src/entities/event';
 import { fetchDeleteEvent } from '@/src/entities/event/api/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/src/shared/ui/button';
+import { getDeleteErrorMessage } from '../model/getDeleteErrorMessage';
+import { appRoutes } from '@/src/shared/config/route-path';
+import { getAdminAccessErrorAction } from '@/src/shared/lib/error-actions/access-error-actions';
 
 interface DeleteEventButtonProps {
   start: string;
@@ -17,9 +21,11 @@ export const DeleteEventButton = (props: DeleteEventButtonProps) => {
   const qc = useQueryClient();
   const router = useRouter();
 
-  const deleteEvent = useMutation({
+  const deleteEventMutation = useMutation({
     mutationFn: (start: string) => fetchDeleteEvent(start),
     onSuccess: () => {
+      toast.success('Event deleted.');
+
       qc.invalidateQueries({
         queryKey: eventQueryKeys.adminList,
       });
@@ -32,24 +38,38 @@ export const DeleteEventButton = (props: DeleteEventButtonProps) => {
       qc.invalidateQueries({
         queryKey: eventQueryKeys.publicDetails(start),
       });
+
       if (shouldRedirect) {
-        router.replace('/admin/events');
+        router.replace(appRoutes.adminEvents);
       }
+    },
+
+    onError: (error) => {
+      const errorAction = getAdminAccessErrorAction(error);
+
+      if (errorAction.type === 'redirect') {
+        toast.error(errorAction.message);
+        router.replace(errorAction.href);
+        return;
+      }
+
+      const deleteErrorNotice = getDeleteErrorMessage(error);
+      toast.error(deleteErrorNotice.message);
     },
   });
 
   const handleDeleteEvent = () => {
-    deleteEvent.mutate(start);
+    deleteEventMutation.mutate(start);
   };
 
   return (
     <Button
       onClick={handleDeleteEvent}
-      disabled={deleteEvent.isPending}
-      variant='danger'
-      className='min-w-25'
+      disabled={deleteEventMutation.isPending}
+      variant="danger"
+      className="min-w-25"
     >
-      {deleteEvent.isPending ? 'Deleting...' : 'Delete'}
+      {deleteEventMutation.isPending ? 'Deleting...' : 'Delete'}
     </Button>
   );
 };

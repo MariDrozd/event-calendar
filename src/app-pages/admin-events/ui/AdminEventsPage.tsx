@@ -5,14 +5,23 @@ import {
   fetchAdminEvents,
   fetchDeleteEvent,
 } from '@/src/entities/event/api/client';
-import { TrashDropZone, trashDropZoneId } from '@/src/features/delete-event';
+import {
+  getDeleteErrorMessage,
+  TrashDropZone,
+  trashDropZoneId,
+} from '@/src/features/delete-event';
 import { DndContext } from '@dnd-kit/core';
 import { DragEndEvent } from '@dnd-kit/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AdminEventsList } from './AdminEventsList';
 import { CreateEvent } from '@/src/features/create-event';
 import { AdminEventsFilters } from './AdminEventsFilters';
+import { Notice } from '@/src/shared/ui/notice';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { getAdminAccessErrorAction } from '@/src/shared/lib/error-actions/access-error-actions';
+import { DEFAULT_ERROR_NOTICE } from '@/src/shared/config/error-notice';
 
 export type StatusFilter = 'all' | 'active' | 'done';
 
@@ -32,6 +41,8 @@ export const AdminEventsPage = () => {
 
   const qc = useQueryClient();
 
+  const router = useRouter();
+
   const filteredEvents = useMemo(() => {
     const normalizedSearch = search.trim().toLocaleLowerCase();
 
@@ -49,12 +60,27 @@ export const AdminEventsPage = () => {
     });
   }, [search, events, statusFilter]);
 
-  const deleteEvent = useMutation({
+  const deleteEventMutation = useMutation({
     mutationFn: fetchDeleteEvent,
     onSuccess: () => {
       qc.invalidateQueries({
         queryKey: eventQueryKeys.adminList,
       });
+
+      toast.success('Event deleted.');
+    },
+
+    onError: (error) => {
+      const errorAction = getAdminAccessErrorAction(error);
+
+      if (errorAction.type === 'redirect') {
+        toast.error(errorAction.message);
+        router.replace(errorAction.href);
+        return;
+      }
+
+      const deleteErrorNotice = getDeleteErrorMessage(error);
+      toast.error(deleteErrorNotice.message);
     },
   });
 
@@ -75,40 +101,75 @@ export const AdminEventsPage = () => {
       return;
     }
 
-    deleteEvent.mutate(start);
+    deleteEventMutation.mutate(start);
   };
+
+  const errorAction = useMemo(() => {
+    return isError ? getAdminAccessErrorAction(error) : null;
+  }, [isError, error]);
+
+  useEffect(() => {
+    if (errorAction?.type === 'redirect') {
+      toast.error(errorAction.message);
+      router.replace(errorAction.href);
+    }
+  }, [errorAction, router]);
+
+  const isSuccessQuery = !isPending && !isError;
+  const hasEvents = events.length > 0;
+  const hasFilteredEvents = filteredEvents.length > 0;
+
+  const isEmptyResult = isSuccessQuery && !hasEvents;
+  const isEmptyFilterResult = isSuccessQuery && hasEvents && !hasFilteredEvents;
+  const isSuccessResult = isSuccessQuery && hasFilteredEvents;
 
   return (
     <section className="mx-auto max-w-6xl space-y-6">
       <h1 className="text-2xl font-semibold">Admin Events</h1>
+      <div className="flex flex-col gap-10">
+        {isPending && <p>Loading events...</p>}
 
-      <AdminEventsFilters
-        search={search}
-        statusFilter={statusFilter}
-        onSearchChange={setSearch}
-        onStatusFilterChange={setStatusFilter}
-      />
+        {isError && errorAction?.type === 'none' && (
+          <Notice variant="error" message={DEFAULT_ERROR_NOTICE.message} />
+        )}
 
-      <CreateEvent />
-      <DndContext onDragEnd={handleDragEnd}>
-        <div className="flex flex-col gap-10">
-          {isPending && <p>Loading events</p>}
-          {isError && (
-            <p className="text-red-600">
-              Failed to load events: {error.message}
-            </p>
-          )}
-          {!isPending && !isError && filteredEvents.length === 0 && (
-            <p>Events not found</p>
-          )}
-          {!isPending && !isError && filteredEvents.length > 0 && (
-            <AdminEventsList events={filteredEvents} />
-          )}
-          <div className="fixed right-8 bottom-8 z-50">
-            <TrashDropZone />
-          </div>
-        </div>
-      </DndContext>
+        {isSuccessQuery && (
+          <>
+            <AdminEventsFilters
+              search={search}
+              statusFilter={statusFilter}
+              onSearchChange={setSearch}
+              onStatusFilterChange={setStatusFilter}
+            />
+
+            <CreateEvent />
+
+            <DndContext onDragEnd={handleDragEnd}>
+              {isEmptyResult && (
+                <Notice
+                  variant="info"
+                  message="No events have been created yet."
+                />
+              )}
+
+              {isEmptyFilterResult && (
+                <Notice
+                  variant="info"
+                  message="No events match your filters."
+                />
+              )}
+
+              {isSuccessResult && <AdminEventsList events={filteredEvents} />}
+              {hasEvents && (
+                // TODO: make TrashDropZone responsive
+                <div className="fixed right-8 bottom-8 z-50 hidden min-[1400px]:block">
+                  <TrashDropZone />
+                </div>
+              )}
+            </DndContext>
+          </>
+        )}
+      </div>
     </section>
   );
 };

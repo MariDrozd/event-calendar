@@ -10,6 +10,13 @@ import { Input } from '@/src/shared/ui/input';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Textarea } from '@/src/shared/ui/textarea';
 import { Button } from '@/src/shared/ui/button';
+import { toast } from 'sonner';
+import { getEditErrorMessage } from '../model/getEditErrorMessage';
+import { Notice } from '@/src/shared/ui/notice';
+import { useRouter } from 'next/navigation';
+import { getAdminAccessErrorAction } from '@/src/shared/lib/error-actions/access-error-actions';
+import { useState } from 'react';
+import { ErrorNotice } from '@/src/shared/types/error';
 
 const editEventSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -32,6 +39,9 @@ export const EditEventForm = ({
   onCancel,
 }: EditEventFormProps) => {
   const qc = useQueryClient();
+  const router = useRouter();
+
+  const [noticeError, setNoticeError] = useState<ErrorNotice | null>(null);
 
   const {
     register,
@@ -55,6 +65,7 @@ export const EditEventForm = ({
     },
 
     onSuccess: () => {
+      setNoticeError(null);
       qc.invalidateQueries({
         queryKey: eventQueryKeys.adminList,
       });
@@ -68,11 +79,28 @@ export const EditEventForm = ({
         queryKey: eventQueryKeys.publicDetails(event.start),
       });
 
+      toast.success('Event updated.');
       onSaved();
+    },
+
+    onError: (error) => {
+      const errorAction = getAdminAccessErrorAction(error);
+
+      if (errorAction.type === 'redirect') {
+        toast.error(errorAction.message);
+        router.replace(errorAction.href);
+        return;
+      }
+      setNoticeError(getEditErrorMessage(error));
     },
   });
 
   const onSubmit = (data: EditEventFormValues) => {
+    if (isSubmitting || editEventMutation.isPending) {
+      return;
+    }
+    setNoticeError(null);
+
     editEventMutation.mutate(data);
   };
 
@@ -115,7 +143,7 @@ export const EditEventForm = ({
             disabled={isSubmitting || editEventMutation.isPending}
             className="min-w-25"
           >
-            Save
+            {editEventMutation.isPending ? 'Saving...' : 'Save'}
           </Button>
           <Button
             size="sm"
@@ -127,10 +155,12 @@ export const EditEventForm = ({
             Cancel
           </Button>
         </div>
-        {editEventMutation.isError && (
-          <p className="text-xs text-rose-600">
-            {editEventMutation.error.message}
-          </p>
+        {noticeError && (
+          <Notice
+            variant="error"
+            title={noticeError.title}
+            message={noticeError.message}
+          />
         )}
       </div>
     </form>

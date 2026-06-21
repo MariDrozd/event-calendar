@@ -3,12 +3,15 @@
 import { z } from 'zod';
 import { fetchLogin, userQueryKeys } from '@/src/entities/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Input } from '@/src/shared/ui/input';
 import { Button } from '@/src/shared/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Notice } from '@/src/shared/ui/notice';
+import { getLoginErrorMessage } from '../model/getLoginErrorMessage';
+import { getLoginRedirectPath } from '../model/getLoginRedirectPath';
 
 const loginSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
@@ -36,19 +39,26 @@ export const LoginForm = () => {
 
   const qc = useQueryClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
+const from = searchParams.get('from');
 
-  const login = useMutation({
+  const loginMutation = useMutation({
     mutationFn: fetchLogin,
     onSuccess: (user) => {
       qc.setQueryData(userQueryKeys.me, user);
-      router.replace('/calendar');
+      const redirectTo = getLoginRedirectPath({user, from})
+      router.replace(redirectTo);
     },
   });
 
   const onSubmit = (data: LoginFormValues) => {
     if (isSubmitting) return;
-    login.mutate(data);
+    loginMutation.mutate(data);
   };
+
+  const submitError = loginMutation.isError
+    ? getLoginErrorMessage(loginMutation.error)
+    : null;
 
   return (
     <form
@@ -77,11 +87,15 @@ export const LoginForm = () => {
           placeholder="Password"
         ></Input>
       </FormField>
-      <Button type="submit" disabled={login.isPending || isSubmitting}>
-        {login.isPending ? 'Login...' : 'Login'}
+      <Button type="submit" disabled={loginMutation.isPending || isSubmitting}>
+        {loginMutation.isPending ? 'Login...' : 'Login'}
       </Button>
-      {login.isError && (
-        <p className="text-sm text-rose-500">Invalid login credentials</p>
+      {submitError && (
+        <Notice
+          variant="error"
+          title={submitError.title}
+          message={submitError.message}
+        />
       )}
     </form>
   );

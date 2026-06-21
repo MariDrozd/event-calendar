@@ -1,20 +1,18 @@
-import { createEvent, getAllEvents } from "@/src/entities/event/server";
-import { denyIfNotParent } from "@/src/entities/user/server";
-import { NextResponse } from "next/server";
-
+import { createEvent, getAllEvents } from '@/src/entities/event/server';
+import { denyIfNotParent } from '@/src/entities/user/server';
+import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
 export const GET = async () => {
   const denied = await denyIfNotParent();
 
-	if (denied) return denied;
-	
-	const events = await getAllEvents();
+  if (denied) return denied;
 
-	return NextResponse.json(events, {status: 200})
-}
+  const events = await getAllEvents();
 
+  return NextResponse.json(events, { status: 200 });
+};
 
 export const POST = async (req: Request) => {
   const denied = await denyIfNotParent();
@@ -27,14 +25,25 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  if (
-    !body ||
-    typeof body.title !== 'string' ||
-    typeof body.description !== 'string' ||
-    typeof body.answer !== 'string' ||
-    typeof body.start !== 'string' ||
-    typeof body.gift !== 'string'
-  ) {
+  const isValidBody = body && typeof body === 'object' && !Array.isArray(body);
+
+  if (!isValidBody) {
+    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+  }
+
+  const fields = [
+    body.title,
+    body.description,
+    body.answer,
+    body.start,
+    body.gift,
+  ];
+
+  const hasInvalidFields = fields.some(
+    (field) => typeof field !== 'string' || !field.trim(),
+  );
+
+  if (hasInvalidFields) {
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
   }
 

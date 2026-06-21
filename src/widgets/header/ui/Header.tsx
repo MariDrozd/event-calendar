@@ -4,6 +4,7 @@ import { useMeQuery } from '@/src/entities/user';
 import Link from 'next/link';
 import { LinkButton } from '@/src/shared/ui/link-button';
 import { LogoutButton } from '@/src/features/auth';
+import { appRoutes } from '@/src/shared/config/route-path';
 
 export const Header = () => {
   const { data, isError, isLoading } = useMeQuery();
@@ -32,14 +33,18 @@ export const Header = () => {
                 {data.name} · {data.role}
               </span>
               {data?.role === 'parent' && (
-                <LinkButton href="/admin/events" size="sm" variant="secondary">
+                <LinkButton
+                  href={appRoutes.adminEvents}
+                  size="sm"
+                  variant="secondary"
+                >
                   Admin
                 </LinkButton>
               )}
               <LogoutButton />
             </>
           ) : (
-            <LinkButton href="/login" size="md">
+            <LinkButton href={appRoutes.login} size="md">
               Login
             </LinkButton>
           )}

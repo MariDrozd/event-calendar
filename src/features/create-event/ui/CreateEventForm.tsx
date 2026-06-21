@@ -3,13 +3,19 @@
 import { z } from 'zod';
 import { eventQueryKeys, fetchCreateEvent } from '@/src/entities/event';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormField } from '@/src/shared/ui/form-field';
 import { Input } from '@/src/shared/ui/input';
 import { Textarea } from '@/src/shared/ui/textarea';
 import { Button } from '@/src/shared/ui/button';
+import { Notice } from '@/src/shared/ui/notice';
+import { getCreateEventErrorMessage } from '../model/getCreateEventErrorMessage';
+import { toast } from 'sonner';
+import { ErrorNotice } from '@/src/shared/types/error';
+import { useState } from 'react';
+import { getAdminAccessErrorAction } from '@/src/shared/lib/error-actions/access-error-actions';
+import { useRouter } from 'next/navigation';
 
 const createEventSchema = z.object({
   start: z.string().trim().min(1, 'Start date is required'),
@@ -46,22 +52,14 @@ export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
     reValidateMode: 'onChange',
   });
 
-  const [successMessage, setSuccessMessage] = useState('');
-  const timeoutRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
   const qc = useQueryClient();
+  const [noticeError, setNoticeError] = useState<ErrorNotice | null>(null);
+  const router = useRouter();
 
-  const createEvent = useMutation({
+  const createEventMutation = useMutation({
     mutationFn: fetchCreateEvent,
     onSuccess: async () => {
+      setNoticeError(null);
       await qc.invalidateQueries({
         queryKey: eventQueryKeys.adminList,
       });
@@ -69,33 +67,39 @@ export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
         queryKey: eventQueryKeys.publicList,
       });
       reset(defaultValues);
-      setSuccessMessage('Event successfully created');
+      toast.success('Event created.');
+    },
 
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    onError: (error) => {
+      const errorAction = getAdminAccessErrorAction(error);
+
+      if (errorAction.type === 'redirect') {
+        toast.error(errorAction.message);
+        router.replace(errorAction.href);
+        return;
       }
-
-      timeoutRef.current = window.setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
+      setNoticeError(getCreateEventErrorMessage(error));
     },
   });
 
   const onSubmit = (data: CreateEventFormValues) => {
-    if (isSubmitting) return;
+    if (isSubmitting || createEventMutation.isPending) return;
+    setNoticeError(null);
 
-    createEvent.mutate(data);
+    createEventMutation.mutate(data);
   };
 
   const onClear = () => {
     reset(defaultValues);
-    createEvent.reset();
-    setSuccessMessage('');
+    createEventMutation.reset();
+    setNoticeError(null);
+  };
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+  const handleCancel = () => {
+    reset(defaultValues);
+    createEventMutation.reset();
+    setNoticeError(null);
+    onCancel();
   };
 
   return (
@@ -140,10 +144,10 @@ export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
           <Button
             size="sm"
             type="submit"
-            disabled={isSubmitting || createEvent.isPending}
+            disabled={isSubmitting || createEventMutation.isPending}
             className="min-w-25"
           >
-            {createEvent.isPending ? 'Creating...' : 'Create'}
+            {createEventMutation.isPending ? 'Creating...' : 'Create'}
           </Button>
 
           <Button
@@ -160,17 +164,18 @@ export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
             size="sm"
             variant="secondary"
             type="button"
-            onClick={onCancel}
+            onClick={handleCancel}
             className="min-w-25"
           >
             Cancel
           </Button>
         </div>
-        {createEvent.isError && (
-          <p className="text-sm text-rose-400">{createEvent.error.message}</p>
-        )}
-        {successMessage && (
-          <p className="text-sm text-cyan-400">{successMessage}</p>
+        {noticeError && (
+          <Notice
+            variant="error"
+            title={noticeError.title}
+            message={noticeError.message}
+          />
         )}
       </div>
     </form>

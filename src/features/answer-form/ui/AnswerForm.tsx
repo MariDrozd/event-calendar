@@ -13,7 +13,7 @@ export const AnswerForm = ({ start }: { start: string }) => {
   const [answer, setAnswer] = useState('');
   const qc = useQueryClient();
 
-  const mutation = useMutation({
+  const checkAnswerMutation = useMutation({
     mutationFn: (payload: { start: string; answer: string }) =>
       fetchCheckAnswer(payload.start, payload.answer),
 
@@ -27,20 +27,20 @@ export const AnswerForm = ({ start }: { start: string }) => {
   });
 
   const onCheck = () => {
-    if (!answer.trim() || mutation.isPending) return;
-    mutation.mutate({ start, answer });
+    if (!answer.trim() || checkAnswerMutation.isPending) return;
+    checkAnswerMutation.mutate({ start, answer });
   };
 
   const onChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
     setAnswer(e.target.value);
 
-    if (mutation.isSuccess || mutation.isError) {
-      mutation.reset();
+    if (checkAnswerMutation.isSuccess || checkAnswerMutation.isError) {
+      checkAnswerMutation.reset();
     }
   };
 
-  const submitError = mutation.isError
-    ? getAnswerSubmitErrorMessage(mutation.error)
+  const submitError = checkAnswerMutation.isError
+    ? getAnswerSubmitErrorMessage(checkAnswerMutation.error)
     : null;
 
   return (
@@ -52,9 +52,9 @@ export const AnswerForm = ({ start }: { start: string }) => {
         <Button
           type="button"
           onClick={onCheck}
-          disabled={mutation.isPending || !answer.trim()}
+          disabled={checkAnswerMutation.isPending || !answer.trim()}
         >
-          {mutation.isPending ? 'Checking...' : 'Check'}
+          {checkAnswerMutation.isPending ? 'Checking...' : 'Check'}
         </Button>
       </div>
 
@@ -68,14 +68,12 @@ export const AnswerForm = ({ start }: { start: string }) => {
         </div>
       )}
 
-      {mutation.isSuccess && !mutation.data.isCorrectAnswer && (
-        <div className="mt-3">
-          <Notice
-            variant='info'
-            message='Wrong answer! Try again'
-          />
-        </div>
-      )}
+      {checkAnswerMutation.isSuccess &&
+        !checkAnswerMutation.data.isCorrectAnswer && (
+          <div className="mt-3">
+            <Notice variant="info" message="Wrong answer! Try again" />
+          </div>
+        )}
     </section>
   );
 };

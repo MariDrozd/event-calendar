@@ -1,18 +1,12 @@
+import { DEFAULT_ERROR_NOTICE } from '@/src/shared/config/error-notice';
 import { ApiError } from '@/src/shared/lib/fetch';
-
-export type AnswerSubmitErrorMessage = {
-  title: string;
-  message: string;
-};
+import type { ErrorNotice } from '@/src/shared/types/error';
 
 export const getAnswerSubmitErrorMessage = (
   errorInfo: unknown,
-): AnswerSubmitErrorMessage => {
+): ErrorNotice => {
   if (!(errorInfo instanceof ApiError)) {
-    return {
-      title: 'Oops!',
-      message: 'Something went wrong. Try again',
-    };
+    return DEFAULT_ERROR_NOTICE;
   }
 
   switch (errorInfo.status) {
@@ -36,9 +30,6 @@ export const getAnswerSubmitErrorMessage = (
       };
 
     default:
-      return {
-        title: 'Oops!',
-        message: 'Something went wrong. Try again',
-      };
+      return DEFAULT_ERROR_NOTICE;
   }
 };
