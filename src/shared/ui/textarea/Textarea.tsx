@@ -21,7 +21,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           'resize-y',
           'focus:border-indigo-500',
           'focus:ring-2 focus:ring-indigo-100',
-          className
+          className,
         )}
         {...props}
       />

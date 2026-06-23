@@ -39,23 +39,15 @@ export const DraggableEventCard = ({ event }: DraggableEventCardProps) => {
         'shadow-sm',
         'transition-colors duration-200',
         'hover:border-slate-300',
-        'relative'
+        'relative',
       )}
     >
       <button
-        type='button'
+        type="button"
         {...attributes}
         {...listeners}
         style={{ cursor: 'grab' }}
-        className="
-          absolute top-1 right-1
-          cursor-grab
-          rounded-md
-          h-12 w-12 p-1
-          text-slate-500
-          hover:bg-slate-100
-          active:cursor-grabbing
-        "
+        className="absolute top-1 right-1 h-12 w-12 cursor-grab rounded-md p-1 text-slate-500 hover:bg-slate-100 active:cursor-grabbing"
         aria-label="Drag event"
         title="Drag to delete"
       >

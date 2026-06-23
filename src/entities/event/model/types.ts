@@ -11,12 +11,15 @@ export type EventTask = {
 
 export type EventDetails = Omit<EventTask, 'answer'>;
 
-export type EventListItem = Pick<EventTask, 'id'| 'start' | 'title' | 'isDone' | 'end' >;
+export type EventListItem = Pick<
+  EventTask,
+  'id' | 'start' | 'title' | 'isDone' | 'end'
+>;
 
 export type CheckAnswerResponse = {
   isCorrectAnswer: boolean;
-	isDone: boolean;
-	end: string | null;
+  isDone: boolean;
+  end: string | null;
 };
 
 export type EventDetailsDTO = {
@@ -32,5 +35,5 @@ export type EventDetailsDTO = {
 export type EventCreateRequest = Omit<EventTask, 'id' | 'end' | 'isDone'>;
 
 export type EventPatchRequest = Partial<
-  Pick<EventTask, "title" | "description" | "gift" | "answer" | "end">
+  Pick<EventTask, 'title' | 'description' | 'gift' | 'answer' | 'end'>
 >;

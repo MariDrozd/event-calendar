@@ -105,15 +105,7 @@ export const CreateEventForm = ({ onCancel }: CreateEventFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="
-        w-full
-        rounded-xl
-        border border-slate-200
-        bg-white
-        p-5
-        shadow-sm
-        flex flex-col gap-4
-      "
+      className="flex w-full flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
     >
       <FormField error={errors.start?.message} label="Start date">
         <Input

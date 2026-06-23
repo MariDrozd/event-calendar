@@ -35,7 +35,7 @@ export const CalendarEventsList = ({ notice }: CalendarEventsListProps) => {
   if (!data?.length) return <div>Events not found</div>;
 
   return (
-    <section className="mx-auto max-w-6xl space-y-6 flex flex-col gap-3">
+    <section className="mx-auto flex max-w-6xl flex-col gap-3 space-y-6">
       {notice && (
         <Notice
           title={notice.title}
@@ -44,22 +44,11 @@ export const CalendarEventsList = ({ notice }: CalendarEventsListProps) => {
         />
       )}
       <h1 className="text-2xl font-bold">Event calendar</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {data.map((event) => (
           <li
             key={event.id}
-            className="
-              flex flex-col items-start
-              rounded-2xl
-              border border-slate-200
-              bg-white
-              p-4
-              shadow-sm
-              transition-all duration-200
-              hover:-translate-y-1
-              hover:border-indigo-300
-              hover:shadow-lg
-            "
+            className="flex flex-col items-start rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg"
           >
             <EventCardBase
               title={event.title}

@@ -37,7 +37,6 @@
 //   };
 // };
 
-
 // import { DEFAULT_ERROR_NOTICE } from '@/src/shared/config/error-notice';
 // import { ApiError } from '@/src/shared/lib/fetch';
 // import { ErrorNotice } from '@/src/shared/types/error';

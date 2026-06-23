@@ -11,12 +11,7 @@ export const Notice = ({ title, message, variant = 'info' }: NoticeData) => {
   return (
     <div
       className={clsx(
-        `
-			flex flex-col
-			gap-2
-			px-4 py-2
-			rounded-md
-		`,
+        `flex flex-col gap-2 rounded-md px-4 py-2`,
         NoticeVariants[variant],
       )}
     >

@@ -44,7 +44,7 @@ export const LoginForm = () => {
     mutationFn: fetchLogin,
     onSuccess: (user) => {
       qc.setQueryData(userQueryKeys.me, user);
-      const redirectTo = getLoginRedirectPath(user)
+      const redirectTo = getLoginRedirectPath(user);
       router.replace(redirectTo);
     },
   });
@@ -60,13 +60,7 @@ export const LoginForm = () => {
 
   return (
     <form
-      className="
-			mx-auto flex w-full 
-			max-w-md  p-6 mt-10
-			flex-col gap-4 
-			rounded-2xl border border-slate-200 
-			bg-white
-			shadow-sm"
+      className="mx-auto mt-10 flex w-full max-w-md flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div>

@@ -107,16 +107,7 @@ export const EditEventForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="
-        mt-3
-        w-full
-        rounded-xl
-        border border-slate-200
-        bg-slate-50/80
-        p-5
-        shadow-sm
-        flex flex-col gap-4
-      "
+      className="mt-3 flex w-full flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50/80 p-5 shadow-sm"
     >
       <FormField error={errors.title?.message} label="Title">
         <Input {...register('title')} placeholder="Title"></Input>

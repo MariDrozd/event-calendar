@@ -9,12 +9,11 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 const CalendarPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ reason?: string, source?: string }>
+  searchParams: Promise<{ reason?: string; source?: string }>;
 }) => {
-
   const { reason, source } = await searchParams;
-  const notice: NoticeData | null = getRouteNotice({ reason, source })
- 
+  const notice: NoticeData | null = getRouteNotice({ reason, source });
+
   const qc = getQueryClient();
 
   await qc.prefetchQuery({
@@ -24,7 +23,7 @@ const CalendarPage = async ({
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
-      <CalendarEventsList notice={notice}/>
+      <CalendarEventsList notice={notice} />
     </HydrationBoundary>
   );
 };

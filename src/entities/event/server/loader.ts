@@ -7,10 +7,12 @@ export async function loadEventList(): Promise<EventListItem[]> {
   return events.map(toEventListItem);
 }
 
-export async function loadEventDetails(start: string): Promise<EventListItem> {
+export async function loadEventDetails(
+  start: string,
+): Promise<EventListItem | null> {
   const event = await getEventByStart(start);
   if (!event) {
-    throw new Error('Event not found');
+    return null;
   }
   return toEventDetails(event);
 }

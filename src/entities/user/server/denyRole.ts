@@ -9,10 +9,7 @@ const denyIfNotRole = async (role: UserRole): Promise<Response | null> => {
     return null;
   } catch (err) {
     if (err instanceof AuthError) {
-      return NextResponse.json(
-        { error: err.message },
-        { status: err.status }
-      );
+      return NextResponse.json({ error: err.message }, { status: err.status });
     }
 
     return NextResponse.json(
@@ -22,6 +19,8 @@ const denyIfNotRole = async (role: UserRole): Promise<Response | null> => {
   }
 };
 
-export const denyIfNotParent = (): Promise<Response | null> => denyIfNotRole('parent');
+export const denyIfNotParent = (): Promise<Response | null> =>
+  denyIfNotRole('parent');
 
-export const denyIfNotChild = (): Promise<Response | null> => denyIfNotRole('child');
+export const denyIfNotChild = (): Promise<Response | null> =>
+  denyIfNotRole('child');

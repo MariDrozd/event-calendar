@@ -5,5 +5,5 @@ export {
   createEvent,
   deleteEvent,
   patchEventEnd,
-  patchEvent
+  patchEvent,
 } from './server/eventsFileDb';

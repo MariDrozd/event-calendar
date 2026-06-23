@@ -14,12 +14,12 @@ export const EventCardBase = (props: EventCardBaseProps) => {
 
   return (
     <article className={clsx(cl, 'flex flex-col')}>
-      <div className="text-sm opacity-80 mb-2">
+      <div className="mb-2 text-sm opacity-80">
         <span>Start date: </span>
         {start}
       </div>
 
-      <h2 className="font-bold mb-1">{title}</h2>
+      <h2 className="mb-1 font-bold">{title}</h2>
 
       {isDone && (
         <div>

@@ -1,15 +1,14 @@
 'use client';
 
-import clsx from "clsx";
-import { ButtonHTMLAttributes } from "react";
-
+import clsx from 'clsx';
+import { ButtonHTMLAttributes } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	variant?: ButtonVariant;
-	size?: ButtonSize;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
 };
 
 const buttonVariants: Record<ButtonVariant, string> = {
@@ -26,26 +25,25 @@ const buttonSizes: Record<ButtonSize, string> = {
 };
 
 export const Button = ({
-	variant = 'primary',
-	size = 'md',
-	className,
-	children,
-	...props
+  variant = 'primary',
+  size = 'md',
+  className,
+  children,
+  ...props
 }: ButtonProps) => {
-
-
-	return (
-		<button className={clsx(
-			'inline-flex items-center justify-center rounded-md font-medium shadow-sm transition',
-			'active:scale-[0.98]',
-			'disabled:cursor-not-allowed disabled:opacity-50',
-			buttonVariants[variant],
-			buttonSizes[size],
-			className
-		)}
-		{...props}
-		>
-			{children}
-		</button>
-	)
-}
+  return (
+    <button
+      className={clsx(
+        'inline-flex items-center justify-center rounded-md font-medium shadow-sm transition',
+        'active:scale-[0.98]',
+        'disabled:cursor-not-allowed disabled:opacity-50',
+        buttonVariants[variant],
+        buttonSizes[size],
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};

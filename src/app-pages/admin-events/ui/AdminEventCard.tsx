@@ -18,16 +18,27 @@ export const AdminEventCard = ({ event }: AdminEventCardProps) => {
         start={event.start}
         isDone={event.isDone}
       >
-        <p className='mt-1'><span className="font-bold">Task: </span>{event.description}</p>
-        <p className='mt-1'><span className="font-bold">Answer: </span>{event.answer}</p>
-        <p className='mt-1'><span className="font-bold">Gift: </span>{event.gift}</p>
+        <p className="mt-1">
+          <span className="font-bold">Task: </span>
+          {event.description}
+        </p>
+        <p className="mt-1">
+          <span className="font-bold">Answer: </span>
+          {event.answer}
+        </p>
+        <p className="mt-1">
+          <span className="font-bold">Gift: </span>
+          {event.gift}
+        </p>
       </EventCardBase>
 
-      <div className={clsx("flex justify-end gap-2 mt-2", isFormOpen && 'flex-col items-end')}>
-        <EditEvent
-          event={event}
-          onEditingChange = {setIsFormOpen}
-        />
+      <div
+        className={clsx(
+          'mt-2 flex justify-end gap-2',
+          isFormOpen && 'flex-col items-end',
+        )}
+      >
+        <EditEvent event={event} onEditingChange={setIsFormOpen} />
         <DeleteEventButton start={event.start} shouldRedirect={false} />
       </div>
     </div>

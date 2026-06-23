@@ -22,7 +22,6 @@ export type AdminEventErrorAction =
 export const getAdminAccessErrorAction = (
   errorInfo: unknown,
 ): AdminEventErrorAction => {
-
   if (errorInfo instanceof ApiError && errorInfo.status === 401) {
     const href = buildLoginRedirectPath(appRoutes.adminEvents);
     return {

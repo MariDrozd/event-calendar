@@ -13,7 +13,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <main className="pt-18 p-8 min-h-screen bg-slate-50 text-slate-900">
+          <main className="min-h-screen bg-slate-50 p-8 pt-18 text-slate-900">
             {children}
             <Toaster />
           </main>

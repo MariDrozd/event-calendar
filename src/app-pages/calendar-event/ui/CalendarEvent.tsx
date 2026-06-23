@@ -83,8 +83,12 @@ export const CalendarEvent = ({ start }: CalendarEventProps) => {
 
       {isChild &&
         (event.isDone ? (
-        <>
-          <Notice title='Congratulations!' message='You unlocked your gift.' variant='success' />
+          <>
+            <Notice
+              title="Congratulations!"
+              message="You unlocked your gift."
+              variant="success"
+            />
           </>
         ) : (
           <AnswerForm start={start} />

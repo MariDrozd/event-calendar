@@ -10,14 +10,7 @@ export const Header = () => {
   const { data, isError, isLoading } = useMeQuery();
 
   return (
-    <header
-      className="
-			fixed left-0 top-0 z-40
-			h-16 w-full
-			border-b border-slate-200
-			bg-white/90 shadow-sm backdrop-blur
-			"
-    >
+    <header className="fixed top-0 left-0 z-40 h-16 w-full border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur">
       <div className="flex h-full items-center justify-between px-6">
         <Link href="/calendar" className="font-semibold text-slate-900">
           Event Calendar

@@ -21,8 +21,9 @@ export const TrashDropZone = () => {
         'text-xs font-medium transition-all duration-200',
         isOver
           ? 'scale-105 border-rose-400 bg-rose-50 text-rose-600'
-          : 'border-slate-300 bg-white/90 text-slate-500 hover:border-rose-300 hover:text-rose-400'
-      )}>
+          : 'border-slate-300 bg-white/90 text-slate-500 hover:border-rose-300 hover:text-rose-400',
+      )}
+    >
       <Trash2 size={40} />
       <span className="text-xs">Drop event</span>
     </div>
